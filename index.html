@@ -15,7 +15,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
-      padding: 2rem 1rem;
+      padding: 1.5rem 1rem;
     }
 
     .container {
@@ -23,41 +23,55 @@
       margin: 0 auto;
     }
 
-    /* Header */
+    /* Header - NUEVO DISEÑO */
     .header {
       background: white;
-      border-radius: 1rem;
-      padding:1rem 1.5rem;;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.25rem;
       margin-bottom: 1.5rem;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .header-logo {
+      flex-shrink: 0;
     }
 
     .logo {
-      max-width: 200px;
+      max-width: 80px;
       height: auto;
-      margin-bottom: 0.75rem;
+    }
+
+    .header-content {
+      flex: 1;
+      text-align: right;
     }
 
     .header h1 {
-      font-size: 1.25rem;
+      font-size: 1.35rem;
+      font-weight: 700;
       background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.15rem;
+      line-height: 1.2;
     }
 
     .header p {
       color: #64748b;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 500;
     }
 
     /* Main Grid */
     .main-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
     }
 
     @media (max-width: 968px) {
@@ -339,34 +353,43 @@
       animation: pulse 0.3s ease-in-out;
     }
 
-    /* Header más pequeño en móviles */
-@media (max-width: 640px) {
-  .header {
-    padding: 0.75rem 1rem;
-  }
-  
-  .logo {
-    max-width: 150px;
-    margin-bottom: 0.5rem;
-  }
-  
-  .header h1 {
-    font-size: 1.1rem;
-  }
-  
-  .header p {
-    font-size: 0.7rem;
-  }
-}
+    /* Header responsive para móviles */
+    @media (max-width: 640px) {
+      .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 0.75rem 1rem;
+      }
+
+      .header-content {
+        text-align: center;
+      }
+
+      .logo {
+        max-width: 70px;
+      }
+
+      .header h1 {
+        font-size: 1.15rem;
+      }
+
+      .header p {
+        font-size: 0.7rem;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <img src="logo.png" alt="MS Medicina Funcional" class="logo">
-      <h1>Calculadora Metabólica</h1>
-      <p>Herramienta de cálculo nutricional - Medicina Funcional</p>
+      <div class="header-logo">
+        <img src="logo.png" alt="MS Medicina Funcional" class="logo">
+      </div>
+      <div class="header-content">
+        <h1>Calculadora Metabólica</h1>
+        <p>Herramienta de cálculo nutricional - Medicina Funcional</p>
+      </div>
     </div>
 
     <div class="main-grid">
@@ -511,7 +534,7 @@
       <div class="results-panel">
         <div class="card">
           <h2 class="card-title">
-            <span class="icon icon-blue">📊</span>
+            <span class="icon icon-blue"></span>
             Resultados
           </h2>
 
