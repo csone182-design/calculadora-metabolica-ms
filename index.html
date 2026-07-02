@@ -214,9 +214,9 @@
       opacity: 0.9;
     }
 
-    /* Objective Cards */
+    /* Objective Cards - NUEVOS COLORES */
     .objective-card {
-      background: white;
+      background: #f1f5f9;
       border: 2px solid #e2e8f0;
       border-radius: 0.75rem;
       padding: 1rem;
@@ -242,21 +242,21 @@
       margin-top: 0.25rem;
     }
 
-    /* Buttons */
+    /* Buttons - ESTILO COMPACTO */
     .button-group {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
       margin-top: 2rem;
       flex-wrap: wrap;
     }
 
     .btn {
       flex: 1;
-      min-width: 150px;
-      padding: 1rem 1.5rem;
+      min-width: 140px;
+      padding: 0.625rem 1.25rem;
       border: none;
-      border-radius: 0.75rem;
-      font-size: 0.95rem;
+      border-radius: 0.625rem;
+      font-size: 0.875rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -269,33 +269,24 @@
     .btn-primary {
       background: linear-gradient(135deg, #ec4899, #3b82f6);
       color: white;
-      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
     }
 
     .btn-secondary {
-      background: white;
-      color: #475569;
-      border: 2px solid #e2e8f0;
+      background: #10b981;
+      color: white;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
     }
 
     .btn-secondary:hover {
-      background: #f8fafc;
-      border-color: #cbd5e1;
-    }
-
-    .btn-success {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-    }
-
-    .btn-success:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
     }
 
     /* Recomposition List */
@@ -375,6 +366,12 @@
 
       .header p {
         font-size: 0.7rem;
+      }
+
+      .btn {
+        min-width: 120px;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -516,13 +513,13 @@
         <!-- Buttons -->
         <div class="button-group no-print">
           <button class="btn btn-primary" onclick="window.print()">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
             </svg>
             Imprimir
           </button>
           <button class="btn btn-secondary" onclick="limpiarFormulario()">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
             Limpiar
@@ -538,8 +535,8 @@
             Resultados
           </h2>
 
-          <!-- TMB -->
-          <div class="result-box">
+          <!-- TMB - FONDO GRIS MUY CLARO -->
+          <div class="result-box" style="background: #f8fafc; border-color: #f1f5f9;">
             <div class="result-label">Tasa Metabólica Basal (TMB)</div>
             <div class="result-value" id="resTMB">-</div>
             <div class="result-detail" id="resTMBDetalle">Fórmula Mifflin-St Jeor</div>
@@ -552,14 +549,14 @@
             <div class="result-detail" id="resGETDetalle">kcal/día</div>
           </div>
 
-          <!-- Pérdida de Grasa -->
+          <!-- Pérdida de Grasa - FONDO GRIS -->
           <div class="objective-card" id="cardPerdidaGrasa" style="display: none;">
             <h4>Pérdida de Grasa</h4>
             <div class="objective-value" id="resPerdidaGrasa">-</div>
             <div class="objective-detail" id="resPerdidaGrasaDetalle">Déficit aplicado</div>
           </div>
 
-          <!-- Ganancia Muscular -->
+          <!-- Ganancia Muscular - FONDO GRIS -->
           <div class="objective-card" id="cardGananciaMusculo" style="display: none;">
             <h4>Ganancia Muscular</h4>
             <div class="objective-value" id="resGananciaMusculo">-</div>
