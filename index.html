@@ -4,18 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora Metabólica - MS Medicina Funcional</title>
+  <!-- Librería para generar PDF profesional -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
       min-height: 100vh;
       padding: 1.5rem 1rem;
+      color: #1e293b;
     }
 
     .container {
@@ -26,58 +25,41 @@
     /* Header */
     .header {
       background: white;
-      border-radius: 0.75rem;
-      padding: 0.75rem 1.25rem;
+      border-radius: 1rem;
+      padding: 1rem 1.5rem;
       margin-bottom: 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
+      border: 1px solid #e2e8f0;
     }
 
-    .header-logo {
-      flex-shrink: 0;
-    }
-
-    .logo {
-      max-width: 80px;
-      height: auto;
-    }
-
-    .header-content {
-      flex: 1;
-      text-align: right;
-    }
-
+    .header-logo { flex-shrink: 0; }
+    .logo { max-width: 80px; height: auto; }
+    .header-content { flex: 1; text-align: right; }
     .header h1 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #9b59b6 0%, #ec4899 50%, #3498db 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 0.15rem;
-      line-height: 1.2;
+      margin-bottom: 0.25rem;
     }
-
-    .header p {
-      color: #64748b;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
+    .header p { color: #64748b; font-size: 0.85rem; font-weight: 500; }
 
     /* Main Grid */
     .main-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.5rem;
+      align-items: start;
     }
 
     @media (max-width: 968px) {
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
+      .main-grid { grid-template-columns: 1fr; }
     }
 
     /* Cards */
@@ -85,19 +67,21 @@
       background: white;
       border-radius: 1rem;
       padding: 1.5rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      border: 1px solid #f1f5f9;
+      margin-bottom: 1.5rem;
     }
 
     .card-title {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: #1e293b;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       padding-bottom: 0.75rem;
-      border-bottom: 2px solid #e2e8f0;
+      border-bottom: 2px solid #f1f5f9;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
     }
 
     .card-title .icon {
@@ -109,18 +93,17 @@
       justify-content: center;
       color: white;
       font-weight: bold;
+      font-size: 0.9rem;
     }
 
     .icon-blue { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
     .icon-pink { background: linear-gradient(135deg, #ec4899, #f43f5e); }
     .icon-purple { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
     .icon-teal { background: linear-gradient(135deg, #14b8a6, #06b6d4); }
+    .icon-amber { background: linear-gradient(135deg, #f59e0b, #f97316); }
 
     /* Form Elements */
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
+    .form-group { margin-bottom: 1rem; }
     label {
       display: block;
       font-size: 0.75rem;
@@ -128,13 +111,10 @@
       color: #64748b;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
     }
 
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select {
+    input[type="text"], input[type="number"], input[type="date"], select {
       width: 100%;
       padding: 0.75rem 1rem;
       border: 1px solid #e2e8f0;
@@ -142,60 +122,53 @@
       font-size: 0.95rem;
       background: #f8fafc;
       transition: all 0.2s;
+      color: #1e293b;
     }
 
-    input:focus,
-    select:focus {
+    input:focus, select:focus {
       outline: none;
       background: white;
       border-color: #3b82f6;
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
-    input:disabled {
-      background: #e2e8f0;
-      cursor: not-allowed;
-    }
+    input:disabled { background: #e2e8f0; cursor: not-allowed; color: #64748b; }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1rem;
-    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
 
     /* Results Panel */
-    .results-panel {
-      position: sticky;
-      top: 2rem;
-    }
+    .results-panel { position: sticky; top: 1.5rem; }
 
-    /* CAJAS DE RESULTADOS BASE (Gris transparente) */
     .result-box {
       background: #f8fafc;
       border: 2px solid #e2e8f0;
       border-radius: 1rem;
       padding: 1.25rem;
       margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .result-box.highlight {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-color: #3b82f6;
     }
 
     .result-label {
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 0.5rem;
       color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .result-value {
-      font-size: 1.75rem;
-      font-weight: 700;
+      font-size: 1.85rem;
+      font-weight: 800;
       line-height: 1.2;
       color: #1e293b;
     }
@@ -204,9 +177,12 @@
       font-size: 0.85rem;
       margin-top: 0.5rem;
       color: #64748b;
+      line-height: 1.4;
     }
 
-    /* TARJETAS DE OBJETIVOS BASE */
+    .result-detail strong { color: #334155; }
+
+    /* Objective Cards */
     .objective-card {
       background: #f8fafc;
       border: 2px solid #e2e8f0;
@@ -216,165 +192,139 @@
       transition: all 0.3s ease;
     }
 
-    .objective-card h4 {
-      font-size: 0.85rem;
-      color: #64748b;
-      margin-bottom: 0.5rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .objective-value {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    .objective-detail {
-      font-size: 0.95rem;
-      color: #64748b;
-      margin-top: 0.25rem;
-    }
-
-    /* 🌟 TARJETAS DESTACADAS CON DEGRADADO DE MARCA 🌟 */
     .objective-card.brand-gradient {
-      background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
+      background: linear-gradient(135deg, #9b59b6 0%, #ec4899 50%, #3498db 100%);
       border: none;
       color: white;
-      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.2);
     }
 
     .objective-card.brand-gradient h4,
     .objective-card.brand-gradient .objective-value,
-    .objective-card.brand-gradient .objective-detail {
+    .objective-card.brand-gradient .objective-detail,
+    .objective-card.brand-gradient .macro-item {
       color: white;
     }
 
-    .objective-card.brand-gradient .objective-detail {
-      opacity: 0.9;
+    .objective-card.brand-gradient .objective-detail { opacity: 0.9; }
+
+    .objective-card h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+      color: #64748b;
     }
+
+    .objective-value { font-size: 1.75rem; font-weight: 800; color: #1e293b; }
+    .objective-detail { font-size: 0.9rem; color: #64748b; margin-top: 0.25rem; }
+
+    /* Macros Grid */
+    .macros-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .macro-item {
+      background: rgba(255,255,255,0.2);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .macro-item .label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; opacity: 0.9; }
+    .macro-item .value { font-size: 1.25rem; font-weight: 800; margin-top: 0.25rem; }
+    .macro-item .kcal { font-size: 0.75rem; opacity: 0.8; }
+
+    /* Extras Table */
+    .extras-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+    }
+    .extras-table td {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .extras-table td:first-child { font-weight: 600; color: #475569; }
+    .extras-table td:last-child { text-align: right; font-weight: 700; color: #1e293b; }
+    .extras-table tr:last-child td { border-bottom: none; }
 
     /* Buttons */
     .button-group {
       display: flex;
       gap: 0.75rem;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       flex-wrap: wrap;
     }
 
     .btn {
-      padding: 0.5rem 1.5rem;
+      padding: 0.75rem 1.5rem;
       border: none;
-      border-radius: 2rem;
-      font-size: 0.85rem;
+      border-radius: 0.75rem;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
-      white-space: nowrap;
+      flex: 1;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #ec4899, #3b82f6);
+      background: linear-gradient(135deg, #9b59b6, #ec4899, #3498db);
       color: white;
-      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.2);
+      box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.2);
     }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
-    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 12px -2px rgba(236, 72, 153, 0.3); }
 
     .btn-secondary {
+      background: white;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+    .btn-secondary:hover { background: #f8fafc; color: #1e293b; }
+
+    .btn-success {
       background: #10b981;
       color: white;
-      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
     }
+    .btn-success:hover { background: #059669; }
 
-    .btn-secondary:hover {
-      background: #059669;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    /* Recomposition List */
-    .recomposition-list {
-      list-style: none;
-      margin-top: 0.75rem;
-    }
-
-    .recomposition-list li {
-      padding: 0.5rem 0.75rem;
-      background: #f1f5f9;
-      border-radius: 0.5rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      color: #475569;
-      border-left: 3px solid #3b82f6;
-    }
-
-    .recomposition-list li:before {
-      content: "✓ ";
-      color: #10b981;
-      font-weight: bold;
-      margin-right: 0.5rem;
-    }
-
-    /* Print Styles */
+    /* Print/PDF Styles */
     @media print {
-      body {
-        background: white;
-        padding: 0;
-      }
-      .no-print {
-        display: none !important;
-      }
-      .card {
-        box-shadow: none;
-        border: 1px solid #e2e8f0;
-        page-break-inside: avoid;
-      }
-      .results-panel {
-        position: static;
-      }
+      body { background: white; padding: 0; }
+      .no-print { display: none !important; }
+      .card { box-shadow: none; border: 1px solid #e2e8f0; break-inside: avoid; }
+      .results-panel { position: static; }
+      .objective-card.brand-gradient { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
 
-    /* Header responsive */
     @media (max-width: 640px) {
-      .header {
-        flex-direction: column;
-        text-align: center;
-        padding: 0.75rem 1rem;
-      }
-      .header-content {
-        text-align: center;
-      }
-      .logo {
-        max-width: 70px;
-      }
-      .header h1 {
-        font-size: 1.15rem;
-      }
-      .btn {
-        padding: 0.45rem 1.25rem;
-        font-size: 0.8rem;
-      }
+      .header { flex-direction: column; text-align: center; }
+      .header-content { text-align: center; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .macros-grid { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="pdf-content">
     <!-- Header -->
     <div class="header">
       <div class="header-logo">
-        <!-- Reemplaza 'logo.png' con la ruta real de tu logo -->
         <img src="logo.png" alt="MS Medicina Funcional" class="logo" onerror="this.style.display='none'">
       </div>
       <div class="header-content">
-        <h1>Calculadora Metabólica</h1>
+        <h1>Calculadora Metabólica Avanzada</h1>
         <p>Herramienta de cálculo nutricional - Medicina Funcional</p>
       </div>
     </div>
@@ -414,13 +364,13 @@
             </div>
             <div class="form-group">
               <label for="comorbilidades">Comorbilidades</label>
-              <input type="text" id="comorbilidades" placeholder="Opcional">
+              <input type="text" id="comorbilidades" placeholder="Ej: Hipotiroidismo">
             </div>
           </div>
         </div>
 
         <!-- Medidas Antropométricas -->
-        <div class="card" style="margin-top: 1.5rem;">
+        <div class="card">
           <h2 class="card-title">
             <span class="icon icon-pink">2</span>
             Medidas Antropométricas
@@ -449,13 +399,17 @@
               <input type="number" id="cadera" min="0" step="0.1" placeholder="Ej: 95">
             </div>
           </div>
+          <div class="form-group">
+            <label for="porcentaje_grasa">% Grasa Corporal (Bioimpedancia)</label>
+            <input type="number" id="porcentaje_grasa" min="0" max="100" step="0.1" placeholder="Ej: 25.5 (Opcional, para Katch-McArdle)">
+          </div>
         </div>
 
         <!-- Cálculo GET -->
-        <div class="card" style="margin-top: 1.5rem;">
+        <div class="card">
           <h2 class="card-title">
             <span class="icon icon-purple">3</span>
-            Cálculo del Gasto Energético Total
+            Gasto Energético
           </h2>
           <div class="form-group">
             <label for="actividad">Nivel de Actividad Física</label>
@@ -465,51 +419,59 @@
               <option value="1.375">Actividad ligera - 1-3 días/semana (1.375)</option>
               <option value="1.55">Actividad moderada - 3-5 días/semana (1.55)</option>
               <option value="1.725">Actividad alta - 6-7 días/semana (1.725)</option>
-              <option value="1.9">Muy alta - Entrenamiento intenso o trabajo físico (1.9)</option>
+              <option value="1.9">Muy alta - Entrenamiento intenso (1.9)</option>
             </select>
           </div>
         </div>
 
         <!-- Objetivos -->
-        <div class="card" style="margin-top: 1.5rem;">
+        <div class="card">
           <h2 class="card-title">
             <span class="icon icon-teal">4</span>
             Objetivos Nutricionales
           </h2>
           
           <div class="form-group">
-            <label for="perdidaGrasa">Objetivo Pérdida de Grasa</label>
+            <label for="perdidaGrasa">🔥 Pérdida de Grasa (Déficit)</label>
             <select id="perdidaGrasa">
               <option value="">Seleccionar porcentaje de déficit</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="gananciaMusculo">Objetivo Ganancia Muscular</label>
+            <label for="gananciaMusculo">💪 Ganancia Muscular (Superávit)</label>
             <select id="gananciaMusculo">
               <option value="">Seleccionar porcentaje de superávit</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="recomposicion">Objetivo Recomposición Corporal</label>
+            <label for="recomposicion">⚖️ Recomposición Corporal</label>
             <select id="recomposicion">
               <option value="">Seleccionar objetivo</option>
-              <option value="recomposicion">Recomposición Corporal</option>
+              <option value="recomposicion">Recomposición (Déficit leve + Alta proteína)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="mantenimiento">🛡️ Mantenimiento</label>
+            <select id="mantenimiento">
+              <option value="">Seleccionar objetivo</option>
+              <option value="mantenimiento">Mantenimiento (0% ajuste calórico)</option>
             </select>
           </div>
         </div>
 
-        <!-- Buttons -->
+        <!-- Buttons (No Print) -->
         <div class="button-group no-print">
-          <button class="btn btn-primary" onclick="window.print()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          <button class="btn btn-primary" onclick="descargarPDF()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            Imprimir
+            Descargar PDF
           </button>
           <button class="btn btn-secondary" onclick="limpiarFormulario()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
             Limpiar
@@ -522,47 +484,95 @@
         <div class="card">
           <h2 class="card-title">
             <span class="icon icon-blue">📊</span>
-            Resultados
+            Resultados Metabólicos
           </h2>
 
-          <!-- TMB - FONDO GRIS TRANSPARENTE -->
+          <!-- TMB Mifflin -->
           <div class="result-box">
-            <div class="result-label">Tasa Metabólica Basal (TMB)</div>
-            <div class="result-value" id="resTMB">-</div>
-            <div class="result-detail" id="resTMBDetalle">Fórmula Mifflin-St Jeor</div>
+            <div class="result-label">TMB: Mifflin-St Jeor</div>
+            <div class="result-value" id="resTMBMifflin">-</div>
+            <div class="result-detail" id="resTMBMifflinDetalle">Fórmula estándar para población general.</div>
           </div>
 
-          <!-- GET - FONDO GRIS TRANSPARENTE -->
+          <!-- TMB Katch-McArdle -->
+          <div class="result-box highlight" id="boxKatch" style="display: none;">
+            <div class="result-label">⭐ TMB: Katch-McArdle (Recomendada)</div>
+            <div class="result-value" id="resTMBKatch">-</div>
+            <div class="result-detail" id="resTMBKatchDetalle">Basada en masa magra. Más precisa cuando se dispone de % de grasa por bioimpedancia.</div>
+          </div>
+
+          <!-- GET -->
           <div class="result-box">
             <div class="result-label">Gasto Energético Total (GET)</div>
             <div class="result-value" id="resGET">-</div>
             <div class="result-detail" id="resGETDetalle">kcal/día</div>
           </div>
 
-          <!-- Pérdida de Grasa - DEGRADADO DE MARCA -->
+          <!-- Pérdida de Grasa -->
           <div class="objective-card brand-gradient" id="cardPerdidaGrasa" style="display: none;">
             <h4>🔥 Pérdida de Grasa</h4>
             <div class="objective-value" id="resPerdidaGrasa">-</div>
             <div class="objective-detail" id="resPerdidaGrasaDetalle">Déficit aplicado</div>
+            <div class="macros-grid" id="macrosPerdida"></div>
           </div>
 
-          <!-- Ganancia Muscular - DEGRADADO DE MARCA -->
+          <!-- Ganancia Muscular -->
           <div class="objective-card brand-gradient" id="cardGananciaMusculo" style="display: none;">
             <h4>💪 Ganancia Muscular</h4>
             <div class="objective-value" id="resGananciaMusculo">-</div>
             <div class="objective-detail" id="resGananciaMusculoDetalle">Superávit aplicado</div>
+            <div class="macros-grid" id="macrosGanancia"></div>
           </div>
 
-          <!-- Recomposición Corporal - FONDO GRIS TRANSPARENTE -->
-          <div class="objective-card" id="cardRecomposicion" style="display: none;">
+          <!-- Recomposición -->
+          <div class="objective-card brand-gradient" id="cardRecomposicion" style="display: none;">
             <h4>⚖️ Recomposición Corporal</h4>
-            <ul class="recomposition-list">
-              <li>Calorías de mantenimiento</li>
-              <li>Déficit muy leve (5-10%)</li>
-              <li>Proteína elevada</li>
-              <li>Entrenamiento de fuerza progresivo</li>
-            </ul>
+            <div class="objective-value" id="resRecomposicion">-</div>
+            <div class="objective-detail" id="resRecomposicionDetalle">Déficit leve (5-10%) + Proteína elevada</div>
+            <div class="macros-grid" id="macrosRecomposicion"></div>
           </div>
+
+          <!-- Mantenimiento -->
+          <div class="objective-card brand-gradient" id="cardMantenimiento" style="display: none;">
+            <h4>🛡️ Mantenimiento</h4>
+            <div class="objective-value" id="resMantenimiento">-</div>
+            <div class="objective-detail" id="resMantenimientoDetalle">Calorías de equilibrio</div>
+            <div class="macros-grid" id="macrosMantenimiento"></div>
+          </div>
+
+          <!-- Extras: Hidratación y Fibra -->
+          <div class="card" style="margin-top: 1rem; border: 2px solid #e2e8f0;" id="cardExtras" style="display: none;">
+            <h2 class="card-title" style="font-size: 1rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem;">
+              <span class="icon icon-amber" style="width: 1.5rem; height: 1.5rem; font-size: 0.8rem;">💧</span>
+              Hidratación y Fibra
+            </h2>
+            <table class="extras-table">
+              <tr>
+                <td>💧 Hidratación Diaria</td>
+                <td id="resHidratacion">-</td>
+              </tr>
+              <tr>
+                <td>🌾 Fibra Dietética</td>
+                <td id="resFibra">-</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- Referencia Micronutrientes MF -->
+          <div class="card" style="margin-top: 1rem; border: 2px solid #e2e8f0; background: #f8fafc;">
+            <h2 class="card-title" style="font-size: 1rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem;">
+              <span class="icon icon-teal" style="width: 1.5rem; height: 1.5rem; font-size: 0.8rem;">🧬</span>
+              Referencia Micronutrientes (MF)
+            </h2>
+            <table class="extras-table">
+              <tr><td>Vitamina D3</td><td>1000 - 5000 UI/día*</td></tr>
+              <tr><td>Omega-3 (EPA+DHA)</td><td>1000 - 3000 mg/día</td></tr>
+              <tr><td>Magnesio (Glicinato/Citrato)</td><td>300 - 400 mg/día</td></tr>
+              <tr><td>Zinc</td><td>15 - 30 mg/día</td></tr>
+            </table>
+            <div class="result-detail" style="font-size: 0.75rem; margin-top: 0.5rem;">*Ajustar según niveles séricos y exposición solar.</div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -574,7 +584,7 @@
 
     // Populate deficit options (-5% to -25%)
     const selectPerdidaGrasa = document.getElementById('perdidaGrasa');
-    for (let i = 5; i <= 25; i++) {
+    for (let i = 5; i <= 25; i += 5) {
       const option = document.createElement('option');
       option.value = -i;
       option.textContent = `Déficit ${i}% (-${i}% del GET)`;
@@ -583,7 +593,7 @@
 
     // Populate surplus options (+5% to +15%)
     const selectGananciaMusculo = document.getElementById('gananciaMusculo');
-    for (let i = 5; i <= 15; i++) {
+    for (let i = 5; i <= 15; i += 5) {
       const option = document.createElement('option');
       option.value = i;
       option.textContent = `Superávit ${i}% (+${i}% del GET)`;
@@ -598,15 +608,13 @@
     function calcularIMC() {
       const peso = parseFloat(document.getElementById('peso').value);
       const talla = parseFloat(document.getElementById('talla').value) / 100;
-      
       if (peso && talla) {
-        const imc = (peso / (talla * talla)).toFixed(1);
-        document.getElementById('imc').value = imc;
+        document.getElementById('imc').value = (peso / (talla * talla)).toFixed(1);
       }
     }
 
     // Auto-calculate everything when inputs change
-    ['peso', 'talla', 'edad', 'sexo', 'actividad', 'perdidaGrasa', 'gananciaMusculo', 'recomposicion'].forEach(id => {
+    ['peso', 'talla', 'edad', 'sexo', 'actividad', 'porcentaje_grasa', 'perdidaGrasa', 'gananciaMusculo', 'recomposicion', 'mantenimiento'].forEach(id => {
       document.getElementById(id).addEventListener('input', calcularTodo);
     });
 
@@ -616,64 +624,172 @@
       const edad = parseFloat(document.getElementById('edad').value);
       const sexo = document.getElementById('sexo').value;
       const actividad = parseFloat(document.getElementById('actividad').value);
+      const porcentajeGrasa = parseFloat(document.getElementById('porcentaje_grasa').value);
       
-      let tmb = 0;
+      let tmbMifflin = 0;
       let formulaText = '';
       
       if (peso && talla && edad && sexo) {
+        // Mifflin-St Jeor
         if (sexo === 'femenino') {
-          tmb = (10 * peso) + (6.25 * talla) - (5 * edad) - 161;
+          tmbMifflin = (10 * peso) + (6.25 * talla) - (5 * edad) - 161;
           formulaText = '(10 × peso) + (6.25 × talla) - (5 × edad) - 161';
-        } else if (sexo === 'masculino') {
-          tmb = (10 * peso) + (6.25 * talla) - (5 * edad) + 5;
+        } else {
+          tmbMifflin = (10 * peso) + (6.25 * talla) - (5 * edad) + 5;
           formulaText = '(10 × peso) + (6.25 × talla) - (5 × edad) + 5';
         }
         
-        document.getElementById('resTMB').textContent = Math.round(tmb) + ' kcal/día';
-        document.getElementById('resTMBDetalle').textContent = formulaText;
+        document.getElementById('resTMBMifflin').textContent = Math.round(tmbMifflin) + ' kcal/día';
+        document.getElementById('resTMBMifflinDetalle').innerHTML = `<strong>Fórmula:</strong> ${formulaText}<br><small>Estándar de oro para población general.</small>`;
         
+        // Katch-McArdle (si hay % grasa)
+        if (porcentajeGrasa > 0 && porcentajeGrasa < 100) {
+          const masaMagra = peso * (1 - (porcentajeGrasa / 100));
+          const tmbKatch = 370 + (21.6 * masaMagra);
+          document.getElementById('boxKatch').style.display = 'block';
+          document.getElementById('resTMBKatch').textContent = Math.round(tmbKatch) + ' kcal/día';
+          document.getElementById('resTMBKatchDetalle').innerHTML = `<strong>Masa Magra:</strong> ${masaMagra.toFixed(1)} kg<br><small>Más precisa con datos de bioimpedancia.</small>`;
+        } else {
+          document.getElementById('boxKatch').style.display = 'none';
+        }
+        
+        // GET (Usamos Katch si está disponible, si no, Mifflin)
         if (actividad) {
-          const get = tmb * actividad;
+          const tmbBase = (porcentajeGrasa > 0 && porcentajeGrasa < 100) 
+            ? (370 + (21.6 * (peso * (1 - (porcentajeGrasa / 100))))) 
+            : tmbMifflin;
+            
+          const get = tmbBase * actividad;
           document.getElementById('resGET').textContent = Math.round(get) + ' kcal/día';
           document.getElementById('resGETDetalle').textContent = `TMB × ${actividad} (factor de actividad)`;
           
-          calcularObjetivos(get);
+          calcularObjetivos(get, peso);
+          calcularExtras(peso, get);
         }
       }
     }
 
-    function calcularObjetivos(get) {
-      // Weight loss
+    function calcularMacros(caloriasObjetivo, peso, tipoObjetivo) {
+      let protFactor = 1.6; // mantenimiento
+      if (tipoObjetivo === 'perdida') protFactor = 2.2;
+      else if (tipoObjetivo === 'ganancia') protFactor = 2.0;
+      else if (tipoObjetivo === 'recomposicion') protFactor = 2.4;
+
+      const protGramos = Math.round(peso * protFactor);
+      const protKcal = protGramos * 4;
+      
+      const grasaPorcentaje = 0.30; // 30% de las calorías
+      const grasaKcal = Math.round(caloriasObjetivo * grasaPorcentaje);
+      const grasaGramos = Math.round(grasaKcal / 9);
+      
+      const carbKcal = Math.max(0, caloriasObjetivo - protKcal - grasaKcal);
+      const carbGramos = Math.round(carbKcal / 4);
+      
+      return { protGramos, protKcal, grasaGramos, grasaKcal, carbGramos, carbKcal };
+    }
+
+    function renderMacros(containerId, macros) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = `
+        <div class="macro-item">
+          <div class="label">Proteínas</div>
+          <div class="value">${macros.protGramos}g</div>
+          <div class="kcal">${macros.protKcal} kcal</div>
+        </div>
+        <div class="macro-item">
+          <div class="label">Grasas</div>
+          <div class="value">${macros.grasaGramos}g</div>
+          <div class="kcal">${macros.grasaKcal} kcal</div>
+        </div>
+        <div class="macro-item">
+          <div class="label">Carbos</div>
+          <div class="value">${macros.carbGramos}g</div>
+          <div class="kcal">${macros.carbKcal} kcal</div>
+        </div>
+      `;
+    }
+
+    function calcularObjetivos(get, peso) {
+      // 1. Pérdida de Grasa
       const perdidaPorcentaje = parseInt(document.getElementById('perdidaGrasa').value);
       if (perdidaPorcentaje) {
         const deficit = get * (Math.abs(perdidaPorcentaje) / 100);
-        const caloriasPerdida = get - deficit;
+        const calorias = get - deficit;
         document.getElementById('cardPerdidaGrasa').style.display = 'block';
-        document.getElementById('resPerdidaGrasa').textContent = Math.round(caloriasPerdida) + ' kcal/día';
+        document.getElementById('resPerdidaGrasa').textContent = Math.round(calorias) + ' kcal/día';
         document.getElementById('resPerdidaGrasaDetalle').textContent = `Déficit: ${Math.round(deficit)} kcal/día (${Math.abs(perdidaPorcentaje)}%)`;
+        renderMacros('macrosPerdida', calcularMacros(calorias, peso, 'perdida'));
       } else {
         document.getElementById('cardPerdidaGrasa').style.display = 'none';
       }
       
-      // Muscle gain
+      // 2. Ganancia Muscular
       const gananciaPorcentaje = parseInt(document.getElementById('gananciaMusculo').value);
       if (gananciaPorcentaje) {
         const superavit = get * (gananciaPorcentaje / 100);
-        const caloriasGanancia = get + superavit;
+        const calorias = get + superavit;
         document.getElementById('cardGananciaMusculo').style.display = 'block';
-        document.getElementById('resGananciaMusculo').textContent = Math.round(caloriasGanancia) + ' kcal/día';
+        document.getElementById('resGananciaMusculo').textContent = Math.round(calorias) + ' kcal/día';
         document.getElementById('resGananciaMusculoDetalle').textContent = `Superávit: ${Math.round(superavit)} kcal/día (${gananciaPorcentaje}%)`;
+        renderMacros('macrosGanancia', calcularMacros(calorias, peso, 'ganancia'));
       } else {
         document.getElementById('cardGananciaMusculo').style.display = 'none';
       }
       
-      // Recomposition
+      // 3. Recomposición
       const recomposicion = document.getElementById('recomposicion').value;
       if (recomposicion === 'recomposicion') {
+        const calorias = get * 0.95; // Déficit leve del 5%
         document.getElementById('cardRecomposicion').style.display = 'block';
+        document.getElementById('resRecomposicion').textContent = Math.round(calorias) + ' kcal/día';
+        renderMacros('macrosRecomposicion', calcularMacros(calorias, peso, 'recomposicion'));
       } else {
         document.getElementById('cardRecomposicion').style.display = 'none';
       }
+
+      // 4. Mantenimiento
+      const mantenimiento = document.getElementById('mantenimiento').value;
+      if (mantenimiento === 'mantenimiento') {
+        document.getElementById('cardMantenimiento').style.display = 'block';
+        document.getElementById('resMantenimiento').textContent = Math.round(get) + ' kcal/día';
+        renderMacros('macrosMantenimiento', calcularMacros(get, peso, 'mantenimiento'));
+      } else {
+        document.getElementById('cardMantenimiento').style.display = 'none';
+      }
+    }
+
+    function calcularExtras(peso, get) {
+      const hidratacionMl = peso * 35;
+      const hidratacionL = (hidratacionMl / 1000).toFixed(1);
+      document.getElementById('resHidratacion').textContent = `${hidratacionL} L/día (${hidratacionMl} ml)`;
+      
+      const fibra = Math.round((get / 1000) * 14);
+      document.getElementById('resFibra').textContent = `${fibra} g/día`;
+      
+      document.getElementById('cardExtras').style.display = 'block';
+    }
+
+    function descargarPDF() {
+      const element = document.getElementById('pdf-content');
+      const paciente = document.getElementById('paciente').value || 'Paciente';
+      const opt = {
+        margin: 0.5,
+        filename: `Plan_Nutricional_${paciente.replace(/\s+/g, '_')}_MS_Health.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      
+      // Mostrar un pequeño feedback visual
+      const btn = event.target.closest('button');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Generando PDF...';
+      btn.disabled = true;
+      
+      html2pdf().set(opt).from(element).save().then(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      });
     }
 
     function limpiarFormulario() {
@@ -688,18 +804,24 @@
         document.getElementById('imc').value = '';
         document.getElementById('cintura').value = '';
         document.getElementById('cadera').value = '';
+        document.getElementById('porcentaje_grasa').value = '';
         document.getElementById('actividad').value = '';
         document.getElementById('perdidaGrasa').value = '';
         document.getElementById('gananciaMusculo').value = '';
         document.getElementById('recomposicion').value = '';
+        document.getElementById('mantenimiento').value = '';
         
-        document.getElementById('resTMB').textContent = '-';
-        document.getElementById('resTMBDetalle').textContent = 'Fórmula Mifflin-St Jeor';
+        document.getElementById('resTMBMifflin').textContent = '-';
+        document.getElementById('resTMBMifflinDetalle').textContent = 'Fórmula estándar para población general.';
+        document.getElementById('boxKatch').style.display = 'none';
         document.getElementById('resGET').textContent = '-';
         document.getElementById('resGETDetalle').textContent = 'kcal/día';
-        document.getElementById('cardPerdidaGrasa').style.display = 'none';
-        document.getElementById('cardGananciaMusculo').style.display = 'none';
-        document.getElementById('cardRecomposicion').style.display = 'none';
+        
+        ['PerdidaGrasa', 'GananciaMusculo', 'Recomposicion', 'Mantenimiento'].forEach(id => {
+          document.getElementById('card' + id).style.display = 'none';
+        });
+        
+        document.getElementById('cardExtras').style.display = 'none';
       }
     }
   </script>
