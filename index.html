@@ -4,593 +4,720 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora Metabólica - MS Medicina Funcional</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
       min-height: 100vh;
       padding: 1.5rem 1rem;
+      color: #1e293b;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1200px; margin: 0 auto; }
 
     /* Header */
     .header {
       background: white;
-      border-radius: 0.75rem;
-      padding: 0.75rem 1.25rem;
+      border-radius: 1rem;
+      padding: 1rem 1.5rem;
       margin-bottom: 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
+      border: 1px solid #e2e8f0;
     }
-
-    .header-logo {
-      flex-shrink: 0;
-    }
-
-    .logo {
-      max-width: 80px;
-      height: auto;
-    }
-
-    .header-content {
-      flex: 1;
-      text-align: right;
-    }
-
+    .header-logo { flex-shrink: 0; }
+    .logo { max-width: 80px; height: auto; }
+    .header-content { flex: 1; text-align: right; }
     .header h1 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #9b59b6 0%, #ec4899 50%, #3498db 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 0.15rem;
-      line-height: 1.2;
+      margin-bottom: 0.25rem;
     }
+    .header p { color: #64748b; font-size: 0.85rem; font-weight: 500; }
 
-    .header p {
-      color: #64748b;
-      font-size: 0.75rem;
-      font-weight: 500;
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      background: white;
+      padding: 0.5rem;
+      border-radius: 1rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
+    .tab-btn {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      background: transparent;
+      border-radius: 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #9b59b6, #ec4899, #3498db);
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.2);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     /* Main Grid */
     .main-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.5rem;
+      align-items: start;
     }
-
-    @media (max-width: 968px) {
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 968px) { .main-grid { grid-template-columns: 1fr; } }
 
     /* Cards */
     .card {
       background: white;
       border-radius: 1rem;
       padding: 1.5rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      border: 1px solid #f1f5f9;
+      margin-bottom: 1.5rem;
     }
-
     .card-title {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: #1e293b;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       padding-bottom: 0.75rem;
-      border-bottom: 2px solid #e2e8f0;
+      border-bottom: 2px solid #f1f5f9;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
     }
-
     .card-title .icon {
-      width: 2rem;
-      height: 2rem;
-      border-radius: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
+      width: 2rem; height: 2rem; border-radius: 0.5rem;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: bold; font-size: 0.9rem;
     }
-
     .icon-blue { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
     .icon-pink { background: linear-gradient(135deg, #ec4899, #f43f5e); }
     .icon-purple { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
     .icon-teal { background: linear-gradient(135deg, #14b8a6, #06b6d4); }
+    .icon-amber { background: linear-gradient(135deg, #f59e0b, #f97316); }
 
     /* Form Elements */
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
+    .form-group { margin-bottom: 1rem; }
     label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+      display: block; font-size: 0.75rem; font-weight: 600; color: #64748b;
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem;
     }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.75rem;
-      font-size: 0.95rem;
-      background: #f8fafc;
-      transition: all 0.2s;
+    input[type="text"], input[type="number"], input[type="date"], select {
+      width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0;
+      border-radius: 0.75rem; font-size: 0.95rem; background: #f8fafc;
+      transition: all 0.2s; color: #1e293b;
     }
-
-    input:focus,
-    select:focus {
-      outline: none;
-      background: white;
-      border-color: #3b82f6;
+    input:focus, select:focus {
+      outline: none; background: white; border-color: #3b82f6;
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
+    input:disabled { background: #e2e8f0; cursor: not-allowed; color: #64748b; }
 
-    input:disabled {
-      background: #e2e8f0;
-      cursor: not-allowed;
+    /* Editable Results Inputs */
+    .editable-result {
+      width: 100%;
+      background: transparent;
+      border: 1px dashed #cbd5e1;
+      border-radius: 0.5rem;
+      padding: 0.25rem 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1e293b;
+      text-align: right;
+      transition: all 0.2s;
     }
+    .editable-result:hover { border-color: #3b82f6; background: #f0f9ff; }
+    .editable-result:focus { border-style: solid; background: white; }
+    .editable-small { font-size: 1rem; font-weight: 600; text-align: left; }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1rem;
-    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
 
     /* Results Panel */
-    .results-panel {
-      position: sticky;
-      top: 2rem;
-    }
-
-    /* CAJAS DE RESULTADOS BASE (Gris transparente) */
+    .results-panel { position: sticky; top: 1.5rem; }
     .result-box {
-      background: #f8fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 1rem;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
+      background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 1rem;
+      padding: 1.25rem; margin-bottom: 1rem; transition: all 0.3s ease;
     }
-
+    .result-box.highlight {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-color: #3b82f6;
+    }
     .result-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-      color: #64748b;
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 0.5rem; color: #64748b;
+      display: flex; align-items: center; justify-content: space-between;
     }
+    .result-detail { font-size: 0.8rem; margin-top: 0.5rem; color: #64748b; line-height: 1.4; }
+    .result-detail strong { color: #334155; }
 
-    .result-value {
-      font-size: 1.75rem;
-      font-weight: 700;
-      line-height: 1.2;
-      color: #1e293b;
+    .reset-btn {
+      font-size: 0.7rem; color: #3b82f6; background: none; border: none;
+      cursor: pointer; text-decoration: underline; font-weight: 600;
     }
+    .reset-btn:hover { color: #1d4ed8; }
 
-    .result-detail {
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
-      color: #64748b;
-    }
-
-    /* TARJETAS DE OBJETIVOS BASE */
+    /* Objective Cards */
     .objective-card {
-      background: #f8fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 1rem;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      transition: all 0.3s ease;
+      background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 1rem;
+      padding: 1.25rem; margin-bottom: 1rem; transition: all 0.3s ease;
     }
-
-    .objective-card h4 {
-      font-size: 0.85rem;
-      color: #64748b;
-      margin-bottom: 0.5rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .objective-value {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    .objective-detail {
-      font-size: 0.95rem;
-      color: #64748b;
-      margin-top: 0.25rem;
-    }
-
-    /* 🌟 TARJETAS DESTACADAS CON DEGRADADO DE MARCA 🌟 */
     .objective-card.brand-gradient {
-      background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);
-      border: none;
-      color: white;
-      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+      background: linear-gradient(135deg, #9b59b6 0%, #ec4899 50%, #3498db 100%);
+      border: none; color: white; box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.2);
     }
-
     .objective-card.brand-gradient h4,
     .objective-card.brand-gradient .objective-value,
-    .objective-card.brand-gradient .objective-detail {
-      color: white;
+    .objective-card.brand-gradient .objective-detail,
+    .objective-card.brand-gradient .macro-item { color: white; }
+    .objective-card.brand-gradient .objective-detail { opacity: 0.9; }
+    .objective-card h4 {
+      font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 0.75rem; color: #64748b;
     }
+    .objective-value { font-size: 1.5rem; font-weight: 800; color: #1e293b; }
+    .objective-detail { font-size: 0.85rem; color: #64748b; margin-top: 0.25rem; }
 
-    .objective-card.brand-gradient .objective-detail {
-      opacity: 0.9;
+    /* Macros Grid */
+    .macros-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1rem; }
+    .macro-item {
+      background: rgba(255,255,255,0.2); border-radius: 0.75rem;
+      padding: 0.75rem; text-align: center; border: 1px solid rgba(255,255,255,0.3);
+    }
+    .macro-item .label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; opacity: 0.9; }
+    .macro-item .value { font-size: 1.1rem; font-weight: 800; margin-top: 0.25rem; }
+    .macro-item .kcal { font-size: 0.7rem; opacity: 0.8; }
+
+    /* Extras Table */
+    .extras-table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.85rem; }
+    .extras-table td { padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; }
+    .extras-table td:first-child { font-weight: 600; color: #475569; }
+    .extras-table td:last-child { text-align: right; font-weight: 700; color: #1e293b; }
+    .extras-table tr:last-child td { border-bottom: none; }
+
+    /* Equivalences Tab Styles */
+    .equiv-controls {
+      display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .equiv-controls .form-group { flex: 1; min-width: 200px; margin-bottom: 0; }
+    
+    .food-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;
+    }
+    .food-card {
+      background: white; border: 1px solid #e2e8f0; border-radius: 1rem;
+      padding: 1.25rem; transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .food-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #3b82f6; }
+    .food-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(135deg, #9b59b6, #ec4899, #3498db);
+    }
+    .food-name { font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; font-size: 1rem; }
+    .food-amount { 
+      font-size: 1.75rem; font-weight: 800; color: #3b82f6; margin-bottom: 0.25rem; 
+    }
+    .food-detail { font-size: 0.8rem; color: #64748b; line-height: 1.4; }
+    .food-note { 
+      margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed #e2e8f0;
+      font-size: 0.75rem; color: #059669; font-weight: 600; font-style: italic;
     }
 
     /* Buttons */
-    .button-group {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
-    }
-
+    .button-group { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
     .btn {
-      padding: 0.5rem 1.5rem;
-      border: none;
-      border-radius: 2rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      white-space: nowrap;
+      padding: 0.75rem 1.5rem; border: none; border-radius: 0.75rem;
+      font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; flex: 1;
     }
-
     .btn-primary {
-      background: linear-gradient(135deg, #ec4899, #3b82f6);
-      color: white;
-      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.2);
+      background: linear-gradient(135deg, #9b59b6, #ec4899, #3498db); color: white;
+      box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.2);
     }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 12px -2px rgba(236, 72, 153, 0.3); }
+    .btn-secondary { background: white; color: #64748b; border: 1px solid #e2e8f0; }
+    .btn-secondary:hover { background: #f8fafc; color: #1e293b; }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
-    }
-
-    .btn-secondary {
-      background: #10b981;
-      color: white;
-      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
-    }
-
-    .btn-secondary:hover {
-      background: #059669;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    /* Recomposition List */
-    .recomposition-list {
-      list-style: none;
-      margin-top: 0.75rem;
-    }
-
-    .recomposition-list li {
-      padding: 0.5rem 0.75rem;
-      background: #f1f5f9;
-      border-radius: 0.5rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      color: #475569;
-      border-left: 3px solid #3b82f6;
-    }
-
-    .recomposition-list li:before {
-      content: "✓ ";
-      color: #10b981;
-      font-weight: bold;
-      margin-right: 0.5rem;
-    }
-
-    /* Print Styles */
+    /* Print/PDF Styles */
     @media print {
-      body {
-        background: white;
-        padding: 0;
-      }
-      .no-print {
-        display: none !important;
-      }
-      .card {
-        box-shadow: none;
-        border: 1px solid #e2e8f0;
-        page-break-inside: avoid;
-      }
-      .results-panel {
-        position: static;
-      }
+      body { background: white; padding: 0; }
+      .no-print, .tabs { display: none !important; }
+      .tab-content { display: block !important; }
+      #tab-equivalencias { display: none !important; } /* Solo imprimir metabólica por defecto */
+      .card { box-shadow: none; border: 1px solid #e2e8f0; break-inside: avoid; }
+      .results-panel { position: static; }
+      .objective-card.brand-gradient { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .editable-result { border: none; background: transparent; padding: 0; }
     }
 
-    /* Header responsive */
     @media (max-width: 640px) {
-      .header {
-        flex-direction: column;
-        text-align: center;
-        padding: 0.75rem 1rem;
-      }
-      .header-content {
-        text-align: center;
-      }
-      .logo {
-        max-width: 70px;
-      }
-      .header h1 {
-        font-size: 1.15rem;
-      }
-      .btn {
-        padding: 0.45rem 1.25rem;
-        font-size: 0.8rem;
-      }
+      .header { flex-direction: column; text-align: center; }
+      .header-content { text-align: center; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .macros-grid { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .equiv-controls { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="pdf-content">
     <!-- Header -->
     <div class="header">
       <div class="header-logo">
-        <!-- Reemplaza 'logo.png' con la ruta real de tu logo -->
         <img src="logo.png" alt="MS Medicina Funcional" class="logo" onerror="this.style.display='none'">
       </div>
       <div class="header-content">
-        <h1>Calculadora Metabólica</h1>
+        <h1>Calculadora Metabólica Avanzada</h1>
         <p>Herramienta de cálculo nutricional - Medicina Funcional</p>
       </div>
     </div>
 
-    <div class="main-grid">
-      <!-- Left Column: Input Forms -->
-      <div class="forms-column">
-        
-        <!-- Datos Generales -->
-        <div class="card">
-          <h2 class="card-title">
-            <span class="icon icon-blue">1</span>
-            Datos Generales
-          </h2>
-          <div class="grid-2">
-            <div class="form-group">
-              <label for="fecha">Fecha</label>
-              <input type="date" id="fecha" required>
+    <!-- Tabs Navigation -->
+    <div class="tabs no-print">
+      <button class="tab-btn active" onclick="switchTab('tab-metabolica')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+        Calculadora Metabólica
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab-equivalencias')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>
+        Equivalencias de Alimentos
+      </button>
+    </div>
+
+    <!-- TAB 1: Calculadora Metabólica -->
+    <div id="tab-metabolica" class="tab-content active">
+      <div class="main-grid">
+        <!-- Left Column: Input Forms -->
+        <div class="forms-column">
+          <div class="card">
+            <h2 class="card-title"><span class="icon icon-blue">1</span> Datos Generales</h2>
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" required>
+              </div>
+              <div class="form-group">
+                <label for="paciente">Paciente</label>
+                <input type="text" id="paciente" placeholder="Nombre completo">
+              </div>
             </div>
-            <div class="form-group">
-              <label for="paciente">Paciente</label>
-              <input type="text" id="paciente" placeholder="Nombre completo">
+            <div class="grid-3">
+              <div class="form-group">
+                <label for="sexo">Sexo</label>
+                <select id="sexo" required>
+                  <option value="">Seleccionar</option>
+                  <option value="femenino">Femenino</option>
+                  <option value="masculino">Masculino</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="edad">Edad (años)</label>
+                <input type="number" id="edad" min="0" max="120" placeholder="Ej: 35">
+              </div>
+              <div class="form-group">
+                <label for="comorbilidades">Comorbilidades</label>
+                <input type="text" id="comorbilidades" placeholder="Ej: Hipotiroidismo">
+              </div>
             </div>
           </div>
-          <div class="grid-3">
+
+          <div class="card">
+            <h2 class="card-title"><span class="icon icon-pink">2</span> Medidas Antropométricas</h2>
+            <div class="grid-3">
+              <div class="form-group">
+                <label for="peso">Peso (kg)</label>
+                <input type="number" id="peso" min="0" step="0.1" placeholder="Ej: 65.5">
+              </div>
+              <div class="form-group">
+                <label for="talla">Talla (cm)</label>
+                <input type="number" id="talla" min="0" step="0.1" placeholder="Ej: 165">
+              </div>
+              <div class="form-group">
+                <label for="imc">IMC</label>
+                <input type="text" id="imc" disabled placeholder="Auto">
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="cintura">Perímetro Cintura (cm)</label>
+                <input type="number" id="cintura" min="0" step="0.1" placeholder="Ej: 85">
+              </div>
+              <div class="form-group">
+                <label for="cadera">Perímetro Cadera (cm)</label>
+                <input type="number" id="cadera" min="0" step="0.1" placeholder="Ej: 95">
+              </div>
+            </div>
             <div class="form-group">
-              <label for="sexo">Sexo</label>
-              <select id="sexo" required>
-                <option value="">Seleccionar</option>
-                <option value="femenino">Femenino</option>
-                <option value="masculino">Masculino</option>
+              <label for="porcentaje_grasa">% Grasa Corporal (Bioimpedancia)</label>
+              <input type="number" id="porcentaje_grasa" min="0" max="100" step="0.1" placeholder="Ej: 25.5 (Activa Katch-McArdle)">
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title"><span class="icon icon-purple">3</span> Gasto Energético</h2>
+            <div class="form-group">
+              <label for="actividad">Nivel de Actividad Física</label>
+              <select id="actividad" required>
+                <option value="">Seleccionar nivel de actividad</option>
+                <option value="1.2">Sedentario (1.2)</option>
+                <option value="1.375">Actividad ligera - 1-3 días/semana (1.375)</option>
+                <option value="1.55">Actividad moderada - 3-5 días/semana (1.55)</option>
+                <option value="1.725">Actividad alta - 6-7 días/semana (1.725)</option>
+                <option value="1.9">Muy alta - Entrenamiento intenso (1.9)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title"><span class="icon icon-teal">4</span> Objetivos Nutricionales</h2>
+            <div class="form-group">
+              <label for="perdidaGrasa">🔥 Pérdida de Grasa (Déficit)</label>
+              <select id="perdidaGrasa">
+                <option value="">Seleccionar porcentaje de déficit</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="edad">Edad (años)</label>
-              <input type="number" id="edad" min="0" max="120" placeholder="Ej: 35">
+              <label for="gananciaMusculo">💪 Ganancia Muscular (Superávit)</label>
+              <select id="gananciaMusculo">
+                <option value="">Seleccionar porcentaje de superávit</option>
+              </select>
             </div>
             <div class="form-group">
-              <label for="comorbilidades">Comorbilidades</label>
-              <input type="text" id="comorbilidades" placeholder="Opcional">
+              <label for="recomposicion">⚖️ Recomposición Corporal</label>
+              <select id="recomposicion">
+                <option value="">Seleccionar objetivo</option>
+                <option value="recomposicion">Recomposición (Déficit leve 5% + Alta proteína)</option>
+              </select>
             </div>
+            <div class="form-group">
+              <label for="mantenimiento">🛡️ Mantenimiento</label>
+              <select id="mantenimiento">
+                <option value="">Seleccionar objetivo</option>
+                <option value="mantenimiento">Mantenimiento (0% ajuste calórico)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-group no-print">
+            <button class="btn btn-primary" onclick="descargarPDF()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+              Descargar PDF
+            </button>
+            <button class="btn btn-secondary" onclick="limpiarFormulario()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+              Limpiar
+            </button>
           </div>
         </div>
 
-        <!-- Medidas Antropométricas -->
-        <div class="card" style="margin-top: 1.5rem;">
-          <h2 class="card-title">
-            <span class="icon icon-pink">2</span>
-            Medidas Antropométricas
-          </h2>
-          <div class="grid-3">
-            <div class="form-group">
-              <label for="peso">Peso (kg)</label>
-              <input type="number" id="peso" min="0" step="0.1" placeholder="Ej: 65.5">
+        <!-- Right Column: Results (EDITABLE) -->
+        <div class="results-panel">
+          <div class="card">
+            <h2 class="card-title"><span class="icon icon-blue">📊</span> Resultados Metabólicos</h2>
+
+            <div class="result-box">
+              <div class="result-label">TMB: Mifflin-St Jeor</div>
+              <div class="result-value" id="resTMBMifflin">-</div>
+              <div class="result-detail" id="resTMBMifflinDetalle">Fórmula estándar para población general.</div>
             </div>
-            <div class="form-group">
-              <label for="talla">Talla (cm)</label>
-              <input type="number" id="talla" min="0" step="0.1" placeholder="Ej: 165">
+
+            <div class="result-box highlight" id="boxKatch" style="display: none;">
+              <div class="result-label">⭐ TMB: Katch-McArdle (Recomendada)</div>
+              <div class="result-value" id="resTMBKatch">-</div>
+              <div class="result-detail" id="resTMBKatchDetalle">Basada en masa magra. Más precisa con bioimpedancia.</div>
             </div>
-            <div class="form-group">
-              <label for="imc">IMC</label>
-              <input type="text" id="imc" disabled placeholder="Auto">
+
+            <div class="result-box">
+              <div class="result-label">Gasto Energético Total (GET)</div>
+              <div class="result-value" id="resGET">-</div>
+              <div class="result-detail" id="resGETDetalle">kcal/día</div>
             </div>
-          </div>
-          <div class="grid-2">
-            <div class="form-group">
-              <label for="cintura">Perímetro Cintura (cm)</label>
-              <input type="number" id="cintura" min="0" step="0.1" placeholder="Ej: 85">
+
+            <!-- Editable Objectives -->
+            <div class="objective-card brand-gradient" id="cardPerdidaGrasa" style="display: none;">
+              <h4>🔥 Pérdida de Grasa <button class="reset-btn" onclick="resetMacros('perdida')" style="float:right; color:white; opacity:0.8;">↺ Restaurar</button></h4>
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+                <input type="number" id="editPerdidaKcal" class="editable-result" style="font-size:1.2rem; width:120px;" oninput="recalcularDesdeMacros('perdida')">
+                <span style="font-weight:600; font-size:1.2rem;">kcal/día</span>
+              </div>
+              <div class="objective-detail" id="resPerdidaGrasaDetalle">Déficit aplicado</div>
+              <div class="macros-grid">
+                <div class="macro-item">
+                  <div class="label">Proteína</div>
+                  <input type="number" id="editPerdidaProt" class="editable-result editable-small" oninput="recalcularDesdeMacros('perdida')"> <span style="font-size:0.7rem">g</span>
+                </div>
+                <div class="macro-item">
+                  <div class="label">Grasas</div>
+                  <input type="number" id="editPerdidaGrasa" class="editable-result editable-small" oninput="recalcularDesdeMacros('perdida')"> <span style="font-size:0.7rem">g</span>
+                </div>
+                <div class="macro-item">
+                  <div class="label">Carbos</div>
+                  <input type="number" id="editPerdidaCarb" class="editable-result editable-small" oninput="recalcularDesdeMacros('perdida')"> <span style="font-size:0.7rem">g</span>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="cadera">Perímetro Cadera (cm)</label>
-              <input type="number" id="cadera" min="0" step="0.1" placeholder="Ej: 95">
+
+            <div class="objective-card brand-gradient" id="cardGananciaMusculo" style="display: none;">
+              <h4>💪 Ganancia Muscular <button class="reset-btn" onclick="resetMacros('ganancia')" style="float:right; color:white; opacity:0.8;">↺ Restaurar</button></h4>
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+                <input type="number" id="editGananciaKcal" class="editable-result" style="font-size:1.2rem; width:120px;" oninput="recalcularDesdeMacros('ganancia')">
+                <span style="font-weight:600; font-size:1.2rem;">kcal/día</span>
+              </div>
+              <div class="objective-detail" id="resGananciaMusculoDetalle">Superávit aplicado</div>
+              <div class="macros-grid">
+                <div class="macro-item">
+                  <div class="label">Proteína</div>
+                  <input type="number" id="editGananciaProt" class="editable-result editable-small" oninput="recalcularDesdeMacros('ganancia')"> <span style="font-size:0.7rem">g</span>
+                </div>
+                <div class="macro-item">
+                  <div class="label">Grasas</div>
+                  <input type="number" id="editGananciaGrasa" class="editable-result editable-small" oninput="recalcularDesdeMacros('ganancia')"> <span style="font-size:0.7rem">g</span>
+                </div>
+                <div class="macro-item">
+                  <div class="label">Carbos</div>
+                  <input type="number" id="editGananciaCarb" class="editable-result editable-small" oninput="recalcularDesdeMacros('ganancia')"> <span style="font-size:0.7rem">g</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Cálculo GET -->
-        <div class="card" style="margin-top: 1.5rem;">
-          <h2 class="card-title">
-            <span class="icon icon-purple">3</span>
-            Cálculo del Gasto Energético Total
-          </h2>
-          <div class="form-group">
-            <label for="actividad">Nivel de Actividad Física</label>
-            <select id="actividad" required>
-              <option value="">Seleccionar nivel de actividad</option>
-              <option value="1.2">Sedentario (1.2)</option>
-              <option value="1.375">Actividad ligera - 1-3 días/semana (1.375)</option>
-              <option value="1.55">Actividad moderada - 3-5 días/semana (1.55)</option>
-              <option value="1.725">Actividad alta - 6-7 días/semana (1.725)</option>
-              <option value="1.9">Muy alta - Entrenamiento intenso o trabajo físico (1.9)</option>
-            </select>
-          </div>
-        </div>
+            <div class="objective-card brand-gradient" id="cardRecomposicion" style="display: none;">
+              <h4>⚖️ Recomposición <button class="reset-btn" onclick="resetMacros('recomposicion')" style="float:right; color:white; opacity:0.8;">↺ Restaurar</button></h4>
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+                <input type="number" id="editRecomposicionKcal" class="editable-result" style="font-size:1.2rem; width:120px;" oninput="recalcularDesdeMacros('recomposicion')">
+                <span style="font-weight:600; font-size:1.2rem;">kcal/día</span>
+              </div>
+              <div class="objective-detail">Déficit leve (5%) + Proteína elevada</div>
+              <div class="macros-grid">
+                <div class="macro-item">
+                  <div class="label">Proteína</div>
+                  <input type="number" id="editRecomposicionProt" class="editable-result editable-small" oninput="recalcularDesdeMacros('recomposicion')"> <span style="font-size:0.7rem">g</span>
+                </div>
+                <div class="macro-item">
+                  <div class="label">Grasas</div>
+                  <input type="number" id="editRecomposicionGrasa" class="editable-result editable-small" oninput="recalcularDesdeMacros('recomposicion')"> <span style="font-size:0.7rem">g</span>
+                </div>
+                <div class="macro-item">
+                  <div class="label">Carbos</div>
+                  <input type="number" id="editRecomposicionCarb" class="editable-result editable-small" oninput="recalcularDesdeMacros('recomposicion')"> <span style="font-size:0.7rem">g</span>
+                </div>
+              </div>
+            </div>
 
-        <!-- Objetivos -->
-        <div class="card" style="margin-top: 1.5rem;">
-          <h2 class="card-title">
-            <span class="icon icon-teal">4</span>
-            Objetivos Nutricionales
-          </h2>
-          
-          <div class="form-group">
-            <label for="perdidaGrasa">Objetivo Pérdida de Grasa</label>
-            <select id="perdidaGrasa">
-              <option value="">Seleccionar porcentaje de déficit</option>
-            </select>
-          </div>
+            <div class="objective-card brand-gradient" id="cardMantenimiento" style="display: none;">
+              <h4>🛡️ Mantenimiento <button class="reset-btn" onclick="resetMacros('mantenimiento')" style="float:right; color:white; opacity:0.8;">↺ Restaurar</button></h4>
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+                <input type="number" id="editMantenimientoKcal" class="editable-result" style="font-size:1.2rem; width:120px;" oninput="recalcularDesdeMacros('mantenimiento')">
+                <span style="font-weight:600; font-size:1.2rem;">kcal/día</span>
+              </div>
+              <div class="objective-detail">Calorías de equilibrio</div>
+              <div class="macros-grid">
+                <div class="macro-item">
+                  <div class="label">Proteína</div>
+                  <input type="number" id="editMantenimientoProt" class="editable-result editable-small" oninput="recalcularDesdeMacros('mantenimiento')"> <span style="font-size:0.7rem">g</span>
+                </div>
+                <div class="macro-item">
+                  <div class="label">Grasas</div>
+                  <input type="number" id="editMantenimientoGrasa" class="editable-result editable-small" oninput="recalcularDesdeMacros('mantenimiento')"> <span style="font-size:0.7rem">g</span>
+                </div>
+                <div class="macro-item">
+                  <div class="label">Carbos</div>
+                  <input type="number" id="editMantenimientoCarb" class="editable-result editable-small" oninput="recalcularDesdeMacros('mantenimiento')"> <span style="font-size:0.7rem">g</span>
+                </div>
+              </div>
+            </div>
 
-          <div class="form-group">
-            <label for="gananciaMusculo">Objetivo Ganancia Muscular</label>
-            <select id="gananciaMusculo">
-              <option value="">Seleccionar porcentaje de superávit</option>
-            </select>
-          </div>
+            <div class="card" style="margin-top: 1rem; border: 2px solid #e2e8f0;" id="cardExtras">
+              <h2 class="card-title" style="font-size: 1rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem;">
+                <span class="icon icon-amber" style="width: 1.5rem; height: 1.5rem; font-size: 0.8rem;">💧</span>
+                Hidratación y Fibra
+              </h2>
+              <table class="extras-table">
+                <tr><td>💧 Hidratación Diaria</td><td id="resHidratacion">-</td></tr>
+                <tr><td>🌾 Fibra Dietética</td><td id="resFibra">-</td></tr>
+              </table>
+            </div>
 
-          <div class="form-group">
-            <label for="recomposicion">Objetivo Recomposición Corporal</label>
-            <select id="recomposicion">
-              <option value="">Seleccionar objetivo</option>
-              <option value="recomposicion">Recomposición Corporal</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="button-group no-print">
-          <button class="btn btn-primary" onclick="window.print()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-            </svg>
-            Imprimir
-          </button>
-          <button class="btn btn-secondary" onclick="limpiarFormulario()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-            Limpiar
-          </button>
-        </div>
-      </div>
-
-      <!-- Right Column: Results -->
-      <div class="results-panel">
-        <div class="card">
-          <h2 class="card-title">
-            <span class="icon icon-blue">📊</span>
-            Resultados
-          </h2>
-
-          <!-- TMB - FONDO GRIS TRANSPARENTE -->
-          <div class="result-box">
-            <div class="result-label">Tasa Metabólica Basal (TMB)</div>
-            <div class="result-value" id="resTMB">-</div>
-            <div class="result-detail" id="resTMBDetalle">Fórmula Mifflin-St Jeor</div>
-          </div>
-
-          <!-- GET - FONDO GRIS TRANSPARENTE -->
-          <div class="result-box">
-            <div class="result-label">Gasto Energético Total (GET)</div>
-            <div class="result-value" id="resGET">-</div>
-            <div class="result-detail" id="resGETDetalle">kcal/día</div>
-          </div>
-
-          <!-- Pérdida de Grasa - DEGRADADO DE MARCA -->
-          <div class="objective-card brand-gradient" id="cardPerdidaGrasa" style="display: none;">
-            <h4>🔥 Pérdida de Grasa</h4>
-            <div class="objective-value" id="resPerdidaGrasa">-</div>
-            <div class="objective-detail" id="resPerdidaGrasaDetalle">Déficit aplicado</div>
-          </div>
-
-          <!-- Ganancia Muscular - DEGRADADO DE MARCA -->
-          <div class="objective-card brand-gradient" id="cardGananciaMusculo" style="display: none;">
-            <h4>💪 Ganancia Muscular</h4>
-            <div class="objective-value" id="resGananciaMusculo">-</div>
-            <div class="objective-detail" id="resGananciaMusculoDetalle">Superávit aplicado</div>
-          </div>
-
-          <!-- Recomposición Corporal - FONDO GRIS TRANSPARENTE -->
-          <div class="objective-card" id="cardRecomposicion" style="display: none;">
-            <h4>⚖️ Recomposición Corporal</h4>
-            <ul class="recomposition-list">
-              <li>Calorías de mantenimiento</li>
-              <li>Déficit muy leve (5-10%)</li>
-              <li>Proteína elevada</li>
-              <li>Entrenamiento de fuerza progresivo</li>
-            </ul>
+            <div class="card" style="margin-top: 1rem; border: 2px solid #e2e8f0; background: #f8fafc;">
+              <h2 class="card-title" style="font-size: 1rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem;">
+                <span class="icon icon-teal" style="width: 1.5rem; height: 1.5rem; font-size: 0.8rem;">🧬</span>
+                Referencia Micronutrientes (MF)
+              </h2>
+              <table class="extras-table">
+                <tr><td>Vitamina D3</td><td>1000 - 5000 UI/día*</td></tr>
+                <tr><td>Omega-3 (EPA+DHA)</td><td>1000 - 3000 mg/día</td></tr>
+                <tr><td>Magnesio (Glicinato/Citrato)</td><td>300 - 400 mg/día</td></tr>
+                <tr><td>Zinc</td><td>15 - 30 mg/día</td></tr>
+              </table>
+              <div class="result-detail" style="font-size: 0.75rem; margin-top: 0.5rem;">*Ajustar según niveles séricos y exposición solar.</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- TAB 2: Equivalencias de Alimentos -->
+    <div id="tab-equivalencias" class="tab-content">
+      <div class="card">
+        <h2 class="card-title">
+          <span class="icon icon-pink">🔄</span>
+          Calculadora de Equivalencias de Alimentos
+        </h2>
+        <p style="color: #64748b; margin-bottom: 1.5rem; font-size: 0.9rem;">
+          Ingresa la cantidad de un nutriente que necesitas cubrir por comida o por día, y el sistema te dirá exactamente cuántos gramos de cada alimento necesitas.
+        </p>
+
+        <div class="equiv-controls">
+          <div class="form-group">
+            <label for="equivNutriente">Nutriente Objetivo</label>
+            <select id="equivNutriente" onchange="calcularEquivalencias()">
+              <option value="proteina">Proteína</option>
+              <option value="carbohidrato">Carbohidratos</option>
+              <option value="grasa">Grasas</option>
+              <option value="fibra">Fibra</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="equivCantidad">Cantidad deseada (gramos)</label>
+            <input type="number" id="equivCantidad" min="1" value="30" oninput="calcularEquivalencias()">
+          </div>
+          <div class="form-group" style="flex: 0 0 auto; margin-bottom: 0;">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary" onclick="calcularEquivalencias()" style="height: 46px;">
+              Calcular Equivalencias
+            </button>
+          </div>
+        </div>
+
+        <div id="equivResults" class="food-grid">
+          <!-- Los resultados se inyectarán aquí con JS -->
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    // Set today's date
+    // --- 1. INICIALIZACIÓN Y TABS ---
     document.getElementById('fecha').valueAsDate = new Date();
 
-    // Populate deficit options (-5% to -25%)
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.closest('.tab-btn').classList.add('active');
+    }
+
+    // --- 2. BASE DE DATOS DE ALIMENTOS (Colombia / Caquetá) ---
+    // Valores aproximados por cada 100g de porción comestible
+    const alimentosDB = [
+      // PROTEÍNAS
+      { nombre: "Pechuga de pollo (cocida)", categoria: "proteina", prot: 31, carb: 0, grasa: 3.6, fibra: 0, nota: "Fuente magra ideal, alta biodisponibilidad." },
+      { nombre: "Muslo de pollo (sin piel, cocido)", categoria: "proteina", prot: 26, carb: 0, grasa: 10, fibra: 0, nota: "Más económico, aporta hierro y zinc." },
+      { nombre: "Posta negra de res (cocida)", categoria: "proteina", prot: 28, carb: 0, grasa: 5, fibra: 0, nota: "Excelente fuente de hierro hemo y B12." },
+      { nombre: "Muchacho de res (cocido)", categoria: "proteina", prot: 26, carb: 0, grasa: 8, fibra: 0, nota: "Corte magro, rico en colágeno." },
+      { nombre: "Lomo de cerdo (cocido)", categoria: "proteina", prot: 26, carb: 0, grasa: 6, fibra: 0, nota: "Buena relación costo-beneficio, bajo en grasa saturada." },
+      { nombre: "Mojarra (filete cocido)", categoria: "proteina", prot: 22, carb: 0, grasa: 4, fibra: 0, nota: "Excelente opción regional, fácil digestión." },
+      { nombre: "Bocachico (filete cocido)", categoria: "proteina", prot: 18, carb: 0, grasa: 5, fibra: 0, nota: "Pescado tradicional, rico en minerales." },
+      { nombre: "Salmón", categoria: "proteina", prot: 20, carb: 0, grasa: 13, fibra: 0, nota: "Aporta Omega-3 (ajustar grasas totales del día)." },
+      { nombre: "Tilapia (filete cocido)", categoria: "proteina", prot: 26, carb: 0, grasa: 3, fibra: 0, nota: "Muy magra, versátil en preparaciones." },
+      { nombre: "Camarones", categoria: "proteina", prot: 24, carb: 0.2, grasa: 1.5, fibra: 0, nota: "Muy bajo en grasa, alto en colesterol dietético." },
+      { nombre: "Atún en agua (escurrido)", categoria: "proteina", prot: 29, carb: 0, grasa: 1, fibra: 0, nota: "Práctico, verificar bajo contenido de mercurio." },
+      { nombre: "Huevo entero", categoria: "proteina", prot: 13, carb: 1.1, grasa: 11, fibra: 0, nota: "Proteína de referencia, aporta colina." },
+      { nombre: "Clara de huevo", categoria: "proteina", prot: 11, carb: 0.7, grasa: 0.2, fibra: 0, nota: "Proteína pura, ideal para aumentar volumen sin grasa." },
+      { nombre: "Queso campesino", categoria: "proteina", prot: 18, carb: 2, grasa: 20, fibra: 0, nota: "Tradicional, moderar por contenido de grasa y sodio." },
+      { nombre: "Queso doble crema", categoria: "proteina", prot: 16, carb: 2, grasa: 28, fibra: 0, nota: "Alto en grasas saturadas, usar porciones pequeñas." },
+      { nombre: "Yogur griego natural (sin azúcar)", categoria: "proteina", prot: 10, carb: 4, grasa: 5, fibra: 0, nota: "Aporta probióticos para salud intestinal." },
+      { nombre: "Kéfir", categoria: "proteina", prot: 3.5, carb: 4, grasa: 1.5, fibra: 0, nota: "Potente probiótico, bajo en calorías." },
+      { nombre: "Lentejas (cocidas)", categoria: "proteina", prot: 9, carb: 20, grasa: 0.4, fibra: 8, nota: "Proteína vegetal + fibra excelente para microbiota." },
+      { nombre: "Frijol cargamanto (cocido)", categoria: "proteina", prot: 9, carb: 22, grasa: 0.5, fibra: 7, nota: "Alto en hierro no hemo (combinar con vitamina C)." },
+      { nombre: "Garbanzos (cocidos)", categoria: "proteina", prot: 9, carb: 27, grasa: 2.6, fibra: 8, nota: "Excelente fuente de proteína y carbohidrato complejo." },
+      { nombre: "Tofu firme", categoria: "proteina", prot: 15, carb: 2, grasa: 8, fibra: 1, nota: "Proteína vegetal completa, contiene isoflavonas." },
+      
+      // CARBOHIDRATOS
+      { nombre: "Papa criolla (cocida)", categoria: "carbohidrato", prot: 2, carb: 18, grasa: 0.2, fibra: 2, nota: "Índice glucémico moderado, rica en potasio." },
+      { nombre: "Papa pastusa (cocida)", categoria: "carbohidrato", prot: 2, carb: 17, grasa: 0.1, fibra: 2, nota: "Buena fuente de energía, versátil." },
+      { nombre: "Yuca (cocida)", categoria: "carbohidrato", prot: 1.5, carb: 33, grasa: 0.3, fibra: 2, nota: "Alto valor energético, libre de gluten." },
+      { nombre: "Ñame (cocido)", categoria: "carbohidrato", prot: 1.5, carb: 28, grasa: 0.2, fibra: 4, nota: "Excelente fuente de fibra y energía de liberación lenta." },
+      { nombre: "Plátano verde (cocido/patacón)", categoria: "carbohidrato", prot: 1.3, carb: 30, grasa: 0.4, fibra: 2.5, nota: "Alto en almidón resistente (prebiótico)." },
+      { nombre: "Plátano maduro", categoria: "carbohidrato", prot: 1.2, carb: 32, grasa: 0.4, fibra: 2, nota: "Más azúcar natural, ideal pre-entreno." },
+      { nombre: "Arroz blanco (cocido)", categoria: "carbohidrato", prot: 2.7, carb: 28, grasa: 0.3, fibra: 0.4, nota: "Energía rápida, bajo residuo (bueno en brotes)." },
+      { nombre: "Arroz integral (cocido)", categoria: "carbohidrato", prot: 2.6, carb: 23, grasa: 1, fibra: 1.8, nota: "Más fibra y micronutrientes que el blanco." },
+      { nombre: "Avena en hojuelas (cruda)", categoria: "carbohidrato", prot: 13, carb: 66, grasa: 7, fibra: 10, nota: "Rica en betaglucanos (reduce colesterol)." },
+      { nombre: "Quinua (cocida)", categoria: "carbohidrato", prot: 4.4, carb: 21, grasa: 1.9, fibra: 2.8, nota: "Pseudocereal, contiene los 9 aminoácidos esenciales." },
+      { nombre: "Arepa de maíz pelado", categoria: "carbohidrato", prot: 3, carb: 45, grasa: 1, fibra: 3, nota: "Tradicional, mejor opción que la harina refinada." },
+      { nombre: "Mote de maíz (trillado)", categoria: "carbohidrato", prot: 3, carb: 20, grasa: 0.5, fibra: 2, nota: "Fácil digestión, tradicional de la región." },
+      { nombre: "Uva caimarona", categoria: "carbohidrato", prot: 1, carb: 10, grasa: 0.2, fibra: 2, nota: "Fruta amazónica, alta en antioxidantes." },
+      { nombre: "Arazá", categoria: "carbohidrato", prot: 0.5, carb: 8, grasa: 0.3, fibra: 3, nota: "Altísima en Vitamina C, baja en azúcar." },
+      { nombre: "Copoazú", categoria: "carbohidrato", prot: 1.5, carb: 12, grasa: 0.5, fibra: 4, nota: "Prebiótico natural, sabor único." },
+      { nombre: "Maracuyá", categoria: "carbohidrato", prot: 2, carb: 12, grasa: 0.7, fibra: 3, nota: "Efecto calmante leve, rico en vitamina A." },
+      { nombre: "Lulo", categoria: "carbohidrato", prot: 1, carb: 8, grasa: 0.3, fibra: 2, nota: "Alcalinizante, rico en vitamina C." },
+      { nombre: "Papaya", categoria: "carbohidrato", prot: 0.5, carb: 11, grasa: 0.3, fibra: 1.7, nota: "Contiene papaína, mejora la digestión de proteínas." },
+      { nombre: "Piña", categoria: "carbohidrato", prot: 0.5, carb: 13, grasa: 0.1, fibra: 1.4, nota: "Contiene bromelina, antiinflamatoria natural." },
+      { nombre: "Guayaba", categoria: "carbohidrato", prot: 2.5, carb: 14, grasa: 1, fibra: 5, nota: "Una de las frutas con más vitamina C y fibra." },
+
+      // GRASAS
+      { nombre: "Aguacate (Hass o Papelillo)", categoria: "grasa", prot: 2, carb: 9, grasa: 15, fibra: 7, nota: "Grasa monoinsaturada, excelente para salud cardiovascular." },
+      { nombre: "Chontaduro", categoria: "grasa", prot: 2, carb: 15, grasa: 14, fibra: 4, nota: "Superalimento amazónico, rico en Vitamina A y grasas buenas." },
+      { nombre: "Almendras", categoria: "grasa", prot: 21, carb: 22, grasa: 50, fibra: 12, nota: "Ricas en Vitamina E y magnesio." },
+      { nombre: "Nueces", categoria: "grasa", prot: 15, carb: 14, grasa: 65, fibra: 7, nota: "Fuente vegetal de Omega-3 (ALA)." },
+      { nombre: "Maní (cacahuete)", categoria: "grasa", prot: 26, carb: 16, grasa: 49, fibra: 8, nota: "Económico, buena fuente de proteína y grasa." },
+      { nombre: "Aceite de oliva extra virgen", categoria: "grasa", prot: 0, carb: 0, grasa: 100, fibra: 0, nota: "Usar en crudo. Potente antiinflamatorio." },
+      { nombre: "Aceite de coco", categoria: "grasa", prot: 0, carb: 0, grasa: 100, fibra: 0, nota: "Contiene TCM, energía rápida. Usar con moderación." },
+
+      // FIBRA (Alimentos destacados por su alto contenido)
+      { nombre: "Lentejas (cocidas)", categoria: "fibra", prot: 9, carb: 20, grasa: 0.4, fibra: 8, nota: "8g de fibra por cada 100g. Excelente para saciedad." },
+      { nombre: "Frijol cargamanto (cocido)", categoria: "fibra", prot: 9, carb: 22, grasa: 0.5, fibra: 7, nota: "7g de fibra. Alimentar la microbiota." },
+      { nombre: "Avena en hojuelas", categoria: "fibra", prot: 13, carb: 66, grasa: 7, fibra: 10, nota: "10g de fibra. Betaglucanos para control glucémico." },
+      { nombre: "Guayaba", categoria: "fibra", prot: 2.5, carb: 14, grasa: 1, fibra: 5, nota: "5g de fibra. Comer con cáscara." },
+      { nombre: "Uva caimarona", categoria: "fibra", prot: 1, carb: 10, grasa: 0.2, fibra: 2, nota: "Fibra soluble de la región." },
+      { nombre: "Brócoli (cocido)", categoria: "fibra", prot: 2.4, carb: 7, grasa: 0.4, fibra: 3.3, nota: "Crucífera, apoya la detoxificación hepática." },
+      { nombre: "Espinaca", categoria: "fibra", prot: 2.9, carb: 3.6, grasa: 0.4, fibra: 2.2, nota: "Baja en calorías, alta en magnesio y folato." }
+    ];
+
+    // --- 3. LÓGICA DE CÁLCULO METABÓLICO ---
     const selectPerdidaGrasa = document.getElementById('perdidaGrasa');
-    for (let i = 5; i <= 25; i++) {
+    for (let i = 5; i <= 25; i += 5) {
       const option = document.createElement('option');
       option.value = -i;
       option.textContent = `Déficit ${i}% (-${i}% del GET)`;
       selectPerdidaGrasa.appendChild(option);
     }
 
-    // Populate surplus options (+5% to +15%)
     const selectGananciaMusculo = document.getElementById('gananciaMusculo');
-    for (let i = 5; i <= 15; i++) {
+    for (let i = 5; i <= 15; i += 5) {
       const option = document.createElement('option');
       option.value = i;
       option.textContent = `Superávit ${i}% (+${i}% del GET)`;
       selectGananciaMusculo.appendChild(option);
     }
 
-    // Auto-calculate IMC
     ['peso', 'talla'].forEach(id => {
       document.getElementById(id).addEventListener('input', calcularIMC);
     });
@@ -598,17 +725,16 @@
     function calcularIMC() {
       const peso = parseFloat(document.getElementById('peso').value);
       const talla = parseFloat(document.getElementById('talla').value) / 100;
-      
       if (peso && talla) {
-        const imc = (peso / (talla * talla)).toFixed(1);
-        document.getElementById('imc').value = imc;
+        document.getElementById('imc').value = (peso / (talla * talla)).toFixed(1);
       }
     }
 
-    // Auto-calculate everything when inputs change
-    ['peso', 'talla', 'edad', 'sexo', 'actividad', 'perdidaGrasa', 'gananciaMusculo', 'recomposicion'].forEach(id => {
+    ['peso', 'talla', 'edad', 'sexo', 'actividad', 'porcentaje_grasa', 'perdidaGrasa', 'gananciaMusculo', 'recomposicion', 'mantenimiento'].forEach(id => {
       document.getElementById(id).addEventListener('input', calcularTodo);
     });
+
+    let formulasData = {}; // Para guardar los valores originales y poder restaurarlos
 
     function calcularTodo() {
       const peso = parseFloat(document.getElementById('peso').value);
@@ -616,64 +742,239 @@
       const edad = parseFloat(document.getElementById('edad').value);
       const sexo = document.getElementById('sexo').value;
       const actividad = parseFloat(document.getElementById('actividad').value);
+      const porcentajeGrasa = parseFloat(document.getElementById('porcentaje_grasa').value);
       
-      let tmb = 0;
+      if (!peso || !talla || !edad || !sexo) return;
+
+      let tmbMifflin = 0;
       let formulaText = '';
       
-      if (peso && talla && edad && sexo) {
-        if (sexo === 'femenino') {
-          tmb = (10 * peso) + (6.25 * talla) - (5 * edad) - 161;
-          formulaText = '(10 × peso) + (6.25 × talla) - (5 × edad) - 161';
-        } else if (sexo === 'masculino') {
-          tmb = (10 * peso) + (6.25 * talla) - (5 * edad) + 5;
-          formulaText = '(10 × peso) + (6.25 × talla) - (5 × edad) + 5';
-        }
+      if (sexo === 'femenino') {
+        tmbMifflin = (10 * peso) + (6.25 * talla) - (5 * edad) - 161;
+        formulaText = '(10 × peso) + (6.25 × talla) - (5 × edad) - 161';
+      } else {
+        tmbMifflin = (10 * peso) + (6.25 * talla) - (5 * edad) + 5;
+        formulaText = '(10 × peso) + (6.25 × talla) - (5 × edad) + 5';
+      }
+      
+      document.getElementById('resTMBMifflin').textContent = Math.round(tmbMifflin) + ' kcal/día';
+      document.getElementById('resTMBMifflinDetalle').innerHTML = `<strong>Fórmula:</strong> ${formulaText}<br><small>Estándar de oro para población general.</small>`;
+      
+      let tmbBase = tmbMifflin;
+      
+      if (porcentajeGrasa > 0 && porcentajeGrasa < 100) {
+        const masaMagra = peso * (1 - (porcentajeGrasa / 100));
+        const tmbKatch = 370 + (21.6 * masaMagra);
+        tmbBase = tmbKatch;
+        document.getElementById('boxKatch').style.display = 'block';
+        document.getElementById('resTMBKatch').textContent = Math.round(tmbKatch) + ' kcal/día';
+        document.getElementById('resTMBKatchDetalle').innerHTML = `<strong>Masa Magra:</strong> ${masaMagra.toFixed(1)} kg<br><small>Más precisa con datos de bioimpedancia.</small>`;
+      } else {
+        document.getElementById('boxKatch').style.display = 'none';
+      }
+      
+      if (actividad) {
+        const get = tmbBase * actividad;
+        document.getElementById('resGET').textContent = Math.round(get) + ' kcal/día';
+        document.getElementById('resGETDetalle').textContent = `TMB × ${actividad} (factor de actividad)`;
         
-        document.getElementById('resTMB').textContent = Math.round(tmb) + ' kcal/día';
-        document.getElementById('resTMBDetalle').textContent = formulaText;
-        
-        if (actividad) {
-          const get = tmb * actividad;
-          document.getElementById('resGET').textContent = Math.round(get) + ' kcal/día';
-          document.getElementById('resGETDetalle').textContent = `TMB × ${actividad} (factor de actividad)`;
-          
-          calcularObjetivos(get);
-        }
+        calcularObjetivos(get, peso);
+        calcularExtras(peso, get);
       }
     }
 
-    function calcularObjetivos(get) {
-      // Weight loss
+    function calcularMacros(caloriasObjetivo, peso, tipoObjetivo) {
+      let protFactor = 1.6; 
+      if (tipoObjetivo === 'perdida') protFactor = 2.2;
+      else if (tipoObjetivo === 'ganancia') protFactor = 2.0;
+      else if (tipoObjetivo === 'recomposicion') protFactor = 2.4;
+
+      const protGramos = Math.round(peso * protFactor);
+      const protKcal = protGramos * 4;
+      
+      const grasaPorcentaje = 0.30; 
+      const grasaKcal = Math.round(caloriasObjetivo * grasaPorcentaje);
+      const grasaGramos = Math.round(grasaKcal / 9);
+      
+      const carbKcal = Math.max(0, caloriasObjetivo - protKcal - grasaKcal);
+      const carbGramos = Math.round(carbKcal / 4);
+      
+      return { kcal: Math.round(caloriasObjetivo), prot: protGramos, grasa: grasaGramos, carb: carbGramos };
+    }
+
+    function calcularObjetivos(get, peso) {
+      // Pérdida
       const perdidaPorcentaje = parseInt(document.getElementById('perdidaGrasa').value);
       if (perdidaPorcentaje) {
-        const deficit = get * (Math.abs(perdidaPorcentaje) / 100);
-        const caloriasPerdida = get - deficit;
+        const calorias = get - (get * (Math.abs(perdidaPorcentaje) / 100));
+        const macros = calcularMacros(calorias, peso, 'perdida');
+        formulasData.perdida = macros;
         document.getElementById('cardPerdidaGrasa').style.display = 'block';
-        document.getElementById('resPerdidaGrasa').textContent = Math.round(caloriasPerdida) + ' kcal/día';
-        document.getElementById('resPerdidaGrasaDetalle').textContent = `Déficit: ${Math.round(deficit)} kcal/día (${Math.abs(perdidaPorcentaje)}%)`;
+        document.getElementById('editPerdidaKcal').value = macros.kcal;
+        document.getElementById('editPerdidaProt').value = macros.prot;
+        document.getElementById('editPerdidaGrasa').value = macros.grasa;
+        document.getElementById('editPerdidaCarb').value = macros.carb;
+        document.getElementById('resPerdidaGrasaDetalle').textContent = `Déficit: ${Math.round(get - calorias)} kcal/día (${Math.abs(perdidaPorcentaje)}%)`;
       } else {
         document.getElementById('cardPerdidaGrasa').style.display = 'none';
       }
       
-      // Muscle gain
+      // Ganancia
       const gananciaPorcentaje = parseInt(document.getElementById('gananciaMusculo').value);
       if (gananciaPorcentaje) {
-        const superavit = get * (gananciaPorcentaje / 100);
-        const caloriasGanancia = get + superavit;
+        const calorias = get + (get * (gananciaPorcentaje / 100));
+        const macros = calcularMacros(calorias, peso, 'ganancia');
+        formulasData.ganancia = macros;
         document.getElementById('cardGananciaMusculo').style.display = 'block';
-        document.getElementById('resGananciaMusculo').textContent = Math.round(caloriasGanancia) + ' kcal/día';
-        document.getElementById('resGananciaMusculoDetalle').textContent = `Superávit: ${Math.round(superavit)} kcal/día (${gananciaPorcentaje}%)`;
+        document.getElementById('editGananciaKcal').value = macros.kcal;
+        document.getElementById('editGananciaProt').value = macros.prot;
+        document.getElementById('editGananciaGrasa').value = macros.grasa;
+        document.getElementById('editGananciaCarb').value = macros.carb;
+        document.getElementById('resGananciaMusculoDetalle').textContent = `Superávit: ${Math.round(calorias - get)} kcal/día (${gananciaPorcentaje}%)`;
       } else {
         document.getElementById('cardGananciaMusculo').style.display = 'none';
       }
       
-      // Recomposition
+      // Recomposición
       const recomposicion = document.getElementById('recomposicion').value;
       if (recomposicion === 'recomposicion') {
+        const calorias = get * 0.95;
+        const macros = calcularMacros(calorias, peso, 'recomposicion');
+        formulasData.recomposicion = macros;
         document.getElementById('cardRecomposicion').style.display = 'block';
+        document.getElementById('editRecomposicionKcal').value = macros.kcal;
+        document.getElementById('editRecomposicionProt').value = macros.prot;
+        document.getElementById('editRecomposicionGrasa').value = macros.grasa;
+        document.getElementById('editRecomposicionCarb').value = macros.carb;
       } else {
         document.getElementById('cardRecomposicion').style.display = 'none';
       }
+
+      // Mantenimiento
+      const mantenimiento = document.getElementById('mantenimiento').value;
+      if (mantenimiento === 'mantenimiento') {
+        const macros = calcularMacros(get, peso, 'mantenimiento');
+        formulasData.mantenimiento = macros;
+        document.getElementById('cardMantenimiento').style.display = 'block';
+        document.getElementById('editMantenimientoKcal').value = macros.kcal;
+        document.getElementById('editMantenimientoProt').value = macros.prot;
+        document.getElementById('editMantenimientoGrasa').value = macros.grasa;
+        document.getElementById('editMantenimientoCarb').value = macros.carb;
+      } else {
+        document.getElementById('cardMantenimiento').style.display = 'none';
+      }
+    }
+
+    // --- 4. LÓGICA DE EDICIÓN EN TIEMPO REAL ---
+    function recalcularDesdeMacros(tipo) {
+      const kcal = parseFloat(document.getElementById(`edit${capitalize(tipo)}Kcal`).value) || 0;
+      const prot = parseFloat(document.getElementById(`edit${capitalize(tipo)}Prot`).value) || 0;
+      const grasa = parseFloat(document.getElementById(`edit${capitalize(tipo)}Grasa`).value) || 0;
+      const carb = parseFloat(document.getElementById(`edit${capitalize(tipo)}Carb`).value) || 0;
+      
+      const kcalCalculada = (prot * 4) + (grasa * 9) + (carb * 4);
+      
+      // Actualizamos el campo de kcal para que refleje la suma de los macros editados
+      // (Opcional: si la doctora edita las kcal primero, podríamos redistribuir, pero es más seguro que los macros manden)
+      if (document.activeElement.id !== `edit${capitalize(tipo)}Kcal`) {
+        document.getElementById(`edit${capitalize(tipo)}Kcal`).value = Math.round(kcalCalculada);
+      }
+    }
+
+    function capitalize(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    function resetMacros(tipo) {
+      if (formulasData[tipo]) {
+        document.getElementById(`edit${capitalize(tipo)}Kcal`).value = formulasData[tipo].kcal;
+        document.getElementById(`edit${capitalize(tipo)}Prot`).value = formulasData[tipo].prot;
+        document.getElementById(`edit${capitalize(tipo)}Grasa`).value = formulasData[tipo].grasa;
+        document.getElementById(`edit${capitalize(tipo)}Carb`).value = formulasData[tipo].carb;
+      }
+    }
+
+    function calcularExtras(peso, get) {
+      const hidratacionMl = peso * 35;
+      const hidratacionL = (hidratacionMl / 1000).toFixed(1);
+      document.getElementById('resHidratacion').textContent = `${hidratacionL} L/día (${hidratacionMl} ml)`;
+      
+      const fibra = Math.round((get / 1000) * 14);
+      document.getElementById('resFibra').textContent = `${fibra} g/día`;
+      
+      document.getElementById('cardExtras').style.display = 'block';
+    }
+
+    // --- 5. LÓGICA DE EQUIVALENCIAS ---
+    function calcularEquivalencias() {
+      const nutriente = document.getElementById('equivNutriente').value;
+      const cantidad = parseFloat(document.getElementById('equivCantidad').value);
+      const container = document.getElementById('equivResults');
+      
+      if (!cantidad || cantidad <= 0) {
+        container.innerHTML = '<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 2rem;">Ingresa una cantidad válida mayor a 0.</p>';
+        return;
+      }
+
+      // Filtrar y ordenar por mayor densidad del nutriente seleccionado
+      const alimentosFiltrados = alimentosDB
+        .filter(a => a[nutriente] > 0)
+        .map(a => {
+          const gramosNecesarios = (cantidad / a[nutriente]) * 100;
+          return { ...a, gramosNecesarios: Math.round(gramosNecesarios) };
+        })
+        .sort((a, b) => b[nutriente] - a[nutriente]) // Mayor densidad primero
+        .slice(0, 12); // Mostrar top 12
+
+      if (alimentosFiltrados.length === 0) {
+        container.innerHTML = '<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 2rem;">No se encontraron alimentos para este nutriente.</p>';
+        return;
+      }
+
+      container.innerHTML = alimentosFiltrados.map(alimento => `
+        <div class="food-card">
+          <div class="food-name">${alimento.nombre}</div>
+          <div class="food-amount">${alimento.gramosNecesarios} g</div>
+          <div class="food-detail">
+            Aporta: ${alimento.prot}g Prot | ${alimento.carb}g Carb | ${alimento.grasa}g Grasa | ${alimento.fibra}g Fibra <br>
+            <small>(por cada 100g)</small>
+          </div>
+          <div class="food-note">💡 ${alimento.nota}</div>
+        </div>
+      `).join('');
+    }
+
+    // Inicializar equivalencias al cargar
+    calcularEquivalencias();
+
+    // --- 6. UTILIDADES ---
+    function descargarPDF() {
+      const element = document.getElementById('pdf-content');
+      const paciente = document.getElementById('paciente').value || 'Paciente';
+      
+      // Ocultar temporalmente la pestaña de equivalencias para que no salga en el PDF
+      const tabEquiv = document.getElementById('tab-equivalencias');
+      const originalDisplay = tabEquiv.style.display;
+      tabEquiv.style.display = 'none';
+
+      const opt = {
+        margin: 0.5,
+        filename: `Plan_Nutricional_${paciente.replace(/\s+/g, '_')}_MS_Health.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      
+      const btn = event.target.closest('button');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Generando PDF...';
+      btn.disabled = true;
+      
+      html2pdf().set(opt).from(element).save().then(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        tabEquiv.style.display = originalDisplay; // Restaurar
+      });
     }
 
     function limpiarFormulario() {
@@ -688,18 +989,25 @@
         document.getElementById('imc').value = '';
         document.getElementById('cintura').value = '';
         document.getElementById('cadera').value = '';
+        document.getElementById('porcentaje_grasa').value = '';
         document.getElementById('actividad').value = '';
         document.getElementById('perdidaGrasa').value = '';
         document.getElementById('gananciaMusculo').value = '';
         document.getElementById('recomposicion').value = '';
+        document.getElementById('mantenimiento').value = '';
         
-        document.getElementById('resTMB').textContent = '-';
-        document.getElementById('resTMBDetalle').textContent = 'Fórmula Mifflin-St Jeor';
+        document.getElementById('resTMBMifflin').textContent = '-';
+        document.getElementById('resTMBMifflinDetalle').textContent = 'Fórmula estándar para población general.';
+        document.getElementById('boxKatch').style.display = 'none';
         document.getElementById('resGET').textContent = '-';
         document.getElementById('resGETDetalle').textContent = 'kcal/día';
-        document.getElementById('cardPerdidaGrasa').style.display = 'none';
-        document.getElementById('cardGananciaMusculo').style.display = 'none';
-        document.getElementById('cardRecomposicion').style.display = 'none';
+        
+        ['PerdidaGrasa', 'GananciaMusculo', 'Recomposicion', 'Mantenimiento'].forEach(id => {
+          document.getElementById('card' + id).style.display = 'none';
+        });
+        
+        document.getElementById('cardExtras').style.display = 'none';
+        formulasData = {};
       }
     }
   </script>
