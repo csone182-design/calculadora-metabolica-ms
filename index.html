@@ -907,24 +907,34 @@
 
     // --- 5. LÓGICA DE EQUIVALENCIAS ---
     function calcularEquivalencias() {
-      const nutriente = document.getElementById('equivNutriente').value;
-      const cantidad = parseFloat(document.getElementById('equivCantidad').value);
-      const container = document.getElementById('equivResults');
-      
-      if (!cantidad || cantidad <= 0) {
-        container.innerHTML = '<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 2rem;">Ingresa una cantidad válida mayor a 0.</p>';
-        return;
-      }
+  const nutrienteSelect = document.getElementById('equivNutriente').value;
+  const cantidad = parseFloat(document.getElementById('equivCantidad').value);
+  const container = document.getElementById('equivResults');
+  
+  // 🆕 MAPEO: Convierte el valor del select al nombre real de la propiedad en la BD
+  const mapeoNutrientes = {
+    'proteina': 'prot',
+    'carbohidrato': 'carb',
+    'grasa': 'grasa',
+    'fibra': 'fibra'
+  };
+  
+  const campoReal = mapeoNutrientes[nutrienteSelect];
+  
+  if (!cantidad || cantidad <= 0) {
+    container.innerHTML = '<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 2rem;">Ingresa una cantidad válida mayor a 0.</p>';
+    return;
+  }
 
-      // Filtrar y ordenar por mayor densidad del nutriente seleccionado
-      const alimentosFiltrados = alimentosDB
-        .filter(a => a[nutriente] > 0)
-        .map(a => {
-          const gramosNecesarios = (cantidad / a[nutriente]) * 100;
-          return { ...a, gramosNecesarios: Math.round(gramosNecesarios) };
-        })
-        .sort((a, b) => b[nutriente] - a[nutriente]) // Mayor densidad primero
-        .slice(0, 12); // Mostrar top 12
+  // Filtrar y ordenar por mayor densidad del nutriente seleccionado
+  const alimentosFiltrados = alimentosDB
+    .filter(a => a[campoReal] > 0)
+    .map(a => {
+      const gramosNecesarios = (cantidad / a[campoReal]) * 100;
+      return { ...a, gramosNecesarios: Math.round(gramosNecesarios) };
+    })
+    .sort((a, b) => b[campoReal] - a[campoReal])
+    .slice(0, 12);
 
       if (alimentosFiltrados.length === 0) {
         container.innerHTML = '<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 2rem;">No se encontraron alimentos para este nutriente.</p>';
