@@ -18,7 +18,6 @@
 
     .container { max-width: 1200px; margin: 0 auto; }
 
-    /* Header */
     .header {
       background: white;
       border-radius: 1rem;
@@ -45,7 +44,6 @@
     }
     .header p { color: #64748b; font-size: 0.85rem; font-weight: 500; }
 
-    /* Tabs */
     .tabs {
       display: flex;
       gap: 0.5rem;
@@ -82,7 +80,6 @@
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Main Grid */
     .main-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -91,7 +88,6 @@
     }
     @media (max-width: 968px) { .main-grid { grid-template-columns: 1fr; } }
 
-    /* Cards */
     .card {
       background: white;
       border-radius: 1rem;
@@ -122,7 +118,6 @@
     .icon-teal { background: linear-gradient(135deg, #14b8a6, #06b6d4); }
     .icon-amber { background: linear-gradient(135deg, #f59e0b, #f97316); }
 
-    /* Form Elements */
     .form-group { margin-bottom: 1rem; }
     label {
       display: block; font-size: 0.75rem; font-weight: 600; color: #64748b;
@@ -139,7 +134,6 @@
     }
     input:disabled { background: #e2e8f0; cursor: not-allowed; color: #64748b; }
 
-    /* Editable Results Inputs */
     .editable-result {
       width: 100%;
       background: transparent;
@@ -159,7 +153,6 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
 
-    /* Results Panel */
     .results-panel { position: sticky; top: 1.5rem; }
     .result-box {
       background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 1rem;
@@ -183,7 +176,6 @@
     }
     .reset-btn:hover { color: #1d4ed8; }
 
-    /* Objective Cards */
     .objective-card {
       background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 1rem;
       padding: 1.25rem; margin-bottom: 1rem; transition: all 0.3s ease;
@@ -204,7 +196,6 @@
     .objective-value { font-size: 1.5rem; font-weight: 800; color: #1e293b; }
     .objective-detail { font-size: 0.85rem; color: #64748b; margin-top: 0.25rem; }
 
-    /* Macros Grid */
     .macros-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1rem; }
     .macro-item {
       background: rgba(255,255,255,0.2); border-radius: 0.75rem;
@@ -214,21 +205,19 @@
     .macro-item .value { font-size: 1.1rem; font-weight: 800; margin-top: 0.25rem; }
     .macro-item .kcal { font-size: 0.7rem; opacity: 0.8; }
 
-    /* Extras Table */
     .extras-table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.85rem; }
     .extras-table td { padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; }
     .extras-table td:first-child { font-weight: 600; color: #475569; }
     .extras-table td:last-child { text-align: right; font-weight: 700; color: #1e293b; }
     .extras-table tr:last-child td { border-bottom: none; }
 
-    /* Equivalences Tab Styles */
     .equiv-controls {
       display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap;
     }
     .equiv-controls .form-group { flex: 1; min-width: 200px; margin-bottom: 0; }
     
     .food-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;
     }
     .food-card {
       background: white; border: 1px solid #e2e8f0; border-radius: 1rem;
@@ -239,17 +228,59 @@
       content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
       background: linear-gradient(135deg, #9b59b6, #ec4899, #3498db);
     }
-    .food-name { font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; font-size: 1rem; }
-    .food-amount { 
-      font-size: 1.75rem; font-weight: 800; color: #3b82f6; margin-bottom: 0.25rem; 
+    .food-name { font-weight: 700; color: #1e293b; margin-bottom: 0.75rem; font-size: 1rem; }
+    
+    /* 🆕 NUEVO: Diseño de pesos crudo/cocinado */
+    .weight-display {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
     }
-    .food-detail { font-size: 0.8rem; color: #64748b; line-height: 1.4; }
+    .weight-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    .weight-box.highlight {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-color: #3b82f6;
+    }
+    .weight-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #64748b;
+      letter-spacing: 0.05em;
+    }
+    .weight-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-top: 0.15rem;
+    }
+    .weight-box.highlight .weight-value { color: #2563eb; }
+    .weight-unit { font-size: 0.75rem; color: #64748b; font-weight: 600; }
+    
+    .weight-single {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 1px solid #3b82f6;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .weight-single .weight-label { color: #1e40af; }
+    .weight-single .weight-value { color: #1e40af; font-size: 1.5rem; }
+    
+    .food-detail { font-size: 0.75rem; color: #64748b; line-height: 1.4; }
     .food-note { 
       margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed #e2e8f0;
       font-size: 0.75rem; color: #059669; font-weight: 600; font-style: italic;
     }
 
-    /* Buttons */
     .button-group { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
     .btn {
       padding: 0.75rem 1.5rem; border: none; border-radius: 0.75rem;
@@ -264,12 +295,11 @@
     .btn-secondary { background: white; color: #64748b; border: 1px solid #e2e8f0; }
     .btn-secondary:hover { background: #f8fafc; color: #1e293b; }
 
-    /* Print/PDF Styles */
     @media print {
       body { background: white; padding: 0; }
       .no-print, .tabs { display: none !important; }
       .tab-content { display: block !important; }
-      #tab-equivalencias { display: none !important; } /* Solo imprimir metabólica por defecto */
+      #tab-equivalencias { display: none !important; }
       .card { box-shadow: none; border: 1px solid #e2e8f0; break-inside: avoid; }
       .results-panel { position: static; }
       .objective-card.brand-gradient { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -283,12 +313,12 @@
       .macros-grid { grid-template-columns: 1fr; }
       .btn { width: 100%; }
       .equiv-controls { flex-direction: column; align-items: stretch; }
+      .weight-display { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="container" id="pdf-content">
-    <!-- Header -->
     <div class="header">
       <div class="header-logo">
         <img src="logo.png" alt="MS Medicina Funcional" class="logo" onerror="this.style.display='none'">
@@ -299,7 +329,6 @@
       </div>
     </div>
 
-    <!-- Tabs Navigation -->
     <div class="tabs no-print">
       <button class="tab-btn active" onclick="switchTab('tab-metabolica')">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
@@ -314,7 +343,6 @@
     <!-- TAB 1: Calculadora Metabólica -->
     <div id="tab-metabolica" class="tab-content active">
       <div class="main-grid">
-        <!-- Left Column: Input Forms -->
         <div class="forms-column">
           <div class="card">
             <h2 class="card-title"><span class="icon icon-blue">1</span> Datos Generales</h2>
@@ -437,7 +465,6 @@
           </div>
         </div>
 
-        <!-- Right Column: Results (EDITABLE) -->
         <div class="results-panel">
           <div class="card">
             <h2 class="card-title"><span class="icon icon-blue">📊</span> Resultados Metabólicos</h2>
@@ -460,7 +487,6 @@
               <div class="result-detail" id="resGETDetalle">kcal/día</div>
             </div>
 
-            <!-- Editable Objectives -->
             <div class="objective-card brand-gradient" id="cardPerdidaGrasa" style="display: none;">
               <h4>🔥 Pérdida de Grasa <button class="reset-btn" onclick="resetMacros('perdida')" style="float:right; color:white; opacity:0.8;">↺ Restaurar</button></h4>
               <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
@@ -590,7 +616,7 @@
           Calculadora de Equivalencias de Alimentos
         </h2>
         <p style="color: #64748b; margin-bottom: 1.5rem; font-size: 0.9rem;">
-          Ingresa la cantidad de un nutriente que necesitas cubrir por comida o por día, y el sistema te dirá exactamente cuántos gramos de cada alimento necesitas.
+          Ingresa la cantidad de un nutriente que necesitas cubrir, y el sistema te mostrará los gramos necesarios tanto en <strong>peso crudo</strong> como <strong>peso cocinado</strong>.
         </p>
 
         <div class="equiv-controls">
@@ -615,16 +641,13 @@
           </div>
         </div>
 
-        <div id="equivResults" class="food-grid">
-          <!-- Los resultados se inyectarán aquí con JS -->
-        </div>
+        <div id="equivResults" class="food-grid"></div>
       </div>
     </div>
 
   </div>
 
   <script>
-    // --- 1. INICIALIZACIÓN Y TABS ---
     document.getElementById('fecha').valueAsDate = new Date();
 
     function switchTab(tabId) {
@@ -634,74 +657,302 @@
       event.target.closest('.tab-btn').classList.add('active');
     }
 
-    // --- 2. BASE DE DATOS DE ALIMENTOS (Colombia / Caquetá) ---
-    // Valores aproximados por cada 100g de porción comestible
+    // 🆕 BASE DE DATOS REESTRUCTURADA: Valores CRUDOS y COCINADOS separados
+    // Para alimentos que no se cocinan (frutas, quesos, yogur), crudo = cocinado
     const alimentosDB = [
-      // PROTEÍNAS
-      { nombre: "Pechuga de pollo (cocida)", categoria: "proteina", prot: 31, carb: 0, grasa: 3.6, fibra: 0, nota: "Fuente magra ideal, alta biodisponibilidad." },
-      { nombre: "Muslo de pollo (sin piel, cocido)", categoria: "proteina", prot: 26, carb: 0, grasa: 10, fibra: 0, nota: "Más económico, aporta hierro y zinc." },
-      { nombre: "Posta negra de res (cocida)", categoria: "proteina", prot: 28, carb: 0, grasa: 5, fibra: 0, nota: "Excelente fuente de hierro hemo y B12." },
-      { nombre: "Muchacho de res (cocido)", categoria: "proteina", prot: 26, carb: 0, grasa: 8, fibra: 0, nota: "Corte magro, rico en colágeno." },
-      { nombre: "Lomo de cerdo (cocido)", categoria: "proteina", prot: 26, carb: 0, grasa: 6, fibra: 0, nota: "Buena relación costo-beneficio, bajo en grasa saturada." },
-      { nombre: "Mojarra (filete cocido)", categoria: "proteina", prot: 22, carb: 0, grasa: 4, fibra: 0, nota: "Excelente opción regional, fácil digestión." },
-      { nombre: "Bocachico (filete cocido)", categoria: "proteina", prot: 18, carb: 0, grasa: 5, fibra: 0, nota: "Pescado tradicional, rico en minerales." },
-      { nombre: "Salmón", categoria: "proteina", prot: 20, carb: 0, grasa: 13, fibra: 0, nota: "Aporta Omega-3 (ajustar grasas totales del día)." },
-      { nombre: "Tilapia (filete cocido)", categoria: "proteina", prot: 26, carb: 0, grasa: 3, fibra: 0, nota: "Muy magra, versátil en preparaciones." },
-      { nombre: "Camarones", categoria: "proteina", prot: 24, carb: 0.2, grasa: 1.5, fibra: 0, nota: "Muy bajo en grasa, alto en colesterol dietético." },
-      { nombre: "Atún en agua (escurrido)", categoria: "proteina", prot: 29, carb: 0, grasa: 1, fibra: 0, nota: "Práctico, verificar bajo contenido de mercurio." },
-      { nombre: "Huevo entero", categoria: "proteina", prot: 13, carb: 1.1, grasa: 11, fibra: 0, nota: "Proteína de referencia, aporta colina." },
-      { nombre: "Clara de huevo", categoria: "proteina", prot: 11, carb: 0.7, grasa: 0.2, fibra: 0, nota: "Proteína pura, ideal para aumentar volumen sin grasa." },
-      { nombre: "Queso campesino", categoria: "proteina", prot: 18, carb: 2, grasa: 20, fibra: 0, nota: "Tradicional, moderar por contenido de grasa y sodio." },
-      { nombre: "Queso doble crema", categoria: "proteina", prot: 16, carb: 2, grasa: 28, fibra: 0, nota: "Alto en grasas saturadas, usar porciones pequeñas." },
-      { nombre: "Yogur griego natural (sin azúcar)", categoria: "proteina", prot: 10, carb: 4, grasa: 5, fibra: 0, nota: "Aporta probióticos para salud intestinal." },
-      { nombre: "Kéfir", categoria: "proteina", prot: 3.5, carb: 4, grasa: 1.5, fibra: 0, nota: "Potente probiótico, bajo en calorías." },
-      { nombre: "Lentejas (cocidas)", categoria: "proteina", prot: 9, carb: 20, grasa: 0.4, fibra: 8, nota: "Proteína vegetal + fibra excelente para microbiota." },
-      { nombre: "Frijol cargamanto (cocido)", categoria: "proteina", prot: 9, carb: 22, grasa: 0.5, fibra: 7, nota: "Alto en hierro no hemo (combinar con vitamina C)." },
-      { nombre: "Garbanzos (cocidos)", categoria: "proteina", prot: 9, carb: 27, grasa: 2.6, fibra: 8, nota: "Excelente fuente de proteína y carbohidrato complejo." },
-      { nombre: "Tofu firme", categoria: "proteina", prot: 15, carb: 2, grasa: 8, fibra: 1, nota: "Proteína vegetal completa, contiene isoflavonas." },
+      // === PROTEÍNAS ANIMALES ===
+      { nombre: "🍗 Pechuga de pollo", categoria: "proteina", 
+        crudo: { prot: 23, carb: 0, grasa: 1.2, fibra: 0 },
+        cocinado: { prot: 31, carb: 0, grasa: 3.6, fibra: 0 },
+        seCocina: true,
+        nota: "Fuente magra ideal. 100g crudo ≈ 74g cocido." },
+      { nombre: "🍗 Muslo de pollo (sin piel)", categoria: "proteina",
+        crudo: { prot: 19, carb: 0, grasa: 7 },
+        cocinado: { prot: 26, carb: 0, grasa: 10 },
+        seCocina: true,
+        nota: "Más económico, aporta hierro y zinc." },
+      { nombre: "🥚 Huevo entero", categoria: "proteina",
+        crudo: { prot: 13, carb: 1.1, grasa: 11, fibra: 0 },
+        cocinado: { prot: 13, carb: 1.1, grasa: 11, fibra: 0 },
+        seCocina: true,
+        nota: "Proteína de referencia, aporta colina. 1 huevo ≈ 50g." },
+      { nombre: "🥚 Clara de huevo", categoria: "proteina",
+        crudo: { prot: 11, carb: 0.7, grasa: 0.2, fibra: 0 },
+        cocinado: { prot: 11, carb: 0.7, grasa: 0.2, fibra: 0 },
+        seCocina: true,
+        nota: "Proteína pura. 1 clara ≈ 33g." },
+      { nombre: "🥛 Yogur griego natural (sin azúcar)", categoria: "proteina",
+        crudo: { prot: 10, carb: 4, grasa: 5, fibra: 0 },
+        cocinado: { prot: 10, carb: 4, grasa: 5, fibra: 0 },
+        seCocina: false,
+        nota: "Aporta probióticos para salud intestinal." },
+      { nombre: "🥛 Kéfir", categoria: "proteina",
+        crudo: { prot: 3.5, carb: 4, grasa: 1.5, fibra: 0 },
+        cocinado: { prot: 3.5, carb: 4, grasa: 1.5, fibra: 0 },
+        seCocina: false,
+        nota: "Potente probiótico, bajo en calorías." },
+      { nombre: "🧀 Queso campesino", categoria: "proteina",
+        crudo: { prot: 18, carb: 2, grasa: 20, fibra: 0 },
+        cocinado: { prot: 18, carb: 2, grasa: 20, fibra: 0 },
+        seCocina: false,
+        nota: "Tradicional. Moderar por sodio y grasa." },
+      { nombre: "🧀 Queso doble crema", categoria: "proteina",
+        crudo: { prot: 16, carb: 2, grasa: 28, fibra: 0 },
+        cocinado: { prot: 16, carb: 2, grasa: 28, fibra: 0 },
+        seCocina: false,
+        nota: "Alto en grasas saturadas, porciones pequeñas." },
       
-      // CARBOHIDRATOS
-      { nombre: "Papa criolla (cocida)", categoria: "carbohidrato", prot: 2, carb: 18, grasa: 0.2, fibra: 2, nota: "Índice glucémico moderado, rica en potasio." },
-      { nombre: "Papa pastusa (cocida)", categoria: "carbohidrato", prot: 2, carb: 17, grasa: 0.1, fibra: 2, nota: "Buena fuente de energía, versátil." },
-      { nombre: "Yuca (cocida)", categoria: "carbohidrato", prot: 1.5, carb: 33, grasa: 0.3, fibra: 2, nota: "Alto valor energético, libre de gluten." },
-      { nombre: "Ñame (cocido)", categoria: "carbohidrato", prot: 1.5, carb: 28, grasa: 0.2, fibra: 4, nota: "Excelente fuente de fibra y energía de liberación lenta." },
-      { nombre: "Plátano verde (cocido/patacón)", categoria: "carbohidrato", prot: 1.3, carb: 30, grasa: 0.4, fibra: 2.5, nota: "Alto en almidón resistente (prebiótico)." },
-      { nombre: "Plátano maduro", categoria: "carbohidrato", prot: 1.2, carb: 32, grasa: 0.4, fibra: 2, nota: "Más azúcar natural, ideal pre-entreno." },
-      { nombre: "Arroz blanco (cocido)", categoria: "carbohidrato", prot: 2.7, carb: 28, grasa: 0.3, fibra: 0.4, nota: "Energía rápida, bajo residuo (bueno en brotes)." },
-      { nombre: "Arroz integral (cocido)", categoria: "carbohidrato", prot: 2.6, carb: 23, grasa: 1, fibra: 1.8, nota: "Más fibra y micronutrientes que el blanco." },
-      { nombre: "Avena en hojuelas (cruda)", categoria: "carbohidrato", prot: 13, carb: 66, grasa: 7, fibra: 10, nota: "Rica en betaglucanos (reduce colesterol)." },
-      { nombre: "Quinua (cocida)", categoria: "carbohidrato", prot: 4.4, carb: 21, grasa: 1.9, fibra: 2.8, nota: "Pseudocereal, contiene los 9 aminoácidos esenciales." },
-      { nombre: "Arepa de maíz pelado", categoria: "carbohidrato", prot: 3, carb: 45, grasa: 1, fibra: 3, nota: "Tradicional, mejor opción que la harina refinada." },
-      { nombre: "Mote de maíz (trillado)", categoria: "carbohidrato", prot: 3, carb: 20, grasa: 0.5, fibra: 2, nota: "Fácil digestión, tradicional de la región." },
-      { nombre: "Uva caimarona", categoria: "carbohidrato", prot: 1, carb: 10, grasa: 0.2, fibra: 2, nota: "Fruta amazónica, alta en antioxidantes." },
-      { nombre: "Arazá", categoria: "carbohidrato", prot: 0.5, carb: 8, grasa: 0.3, fibra: 3, nota: "Altísima en Vitamina C, baja en azúcar." },
-      { nombre: "Copoazú", categoria: "carbohidrato", prot: 1.5, carb: 12, grasa: 0.5, fibra: 4, nota: "Prebiótico natural, sabor único." },
-      { nombre: "Maracuyá", categoria: "carbohidrato", prot: 2, carb: 12, grasa: 0.7, fibra: 3, nota: "Efecto calmante leve, rico en vitamina A." },
-      { nombre: "Lulo", categoria: "carbohidrato", prot: 1, carb: 8, grasa: 0.3, fibra: 2, nota: "Alcalinizante, rico en vitamina C." },
-      { nombre: "Papaya", categoria: "carbohidrato", prot: 0.5, carb: 11, grasa: 0.3, fibra: 1.7, nota: "Contiene papaína, mejora la digestión de proteínas." },
-      { nombre: "Piña", categoria: "carbohidrato", prot: 0.5, carb: 13, grasa: 0.1, fibra: 1.4, nota: "Contiene bromelina, antiinflamatoria natural." },
-      { nombre: "Guayaba", categoria: "carbohidrato", prot: 2.5, carb: 14, grasa: 1, fibra: 5, nota: "Una de las frutas con más vitamina C y fibra." },
-
-      // GRASAS
-      { nombre: "Aguacate (Hass o Papelillo)", categoria: "grasa", prot: 2, carb: 9, grasa: 15, fibra: 7, nota: "Grasa monoinsaturada, excelente para salud cardiovascular." },
-      { nombre: "Chontaduro", categoria: "grasa", prot: 2, carb: 15, grasa: 14, fibra: 4, nota: "Superalimento amazónico, rico en Vitamina A y grasas buenas." },
-      { nombre: "Almendras", categoria: "grasa", prot: 21, carb: 22, grasa: 50, fibra: 12, nota: "Ricas en Vitamina E y magnesio." },
-      { nombre: "Nueces", categoria: "grasa", prot: 15, carb: 14, grasa: 65, fibra: 7, nota: "Fuente vegetal de Omega-3 (ALA)." },
-      { nombre: "Maní (cacahuete)", categoria: "grasa", prot: 26, carb: 16, grasa: 49, fibra: 8, nota: "Económico, buena fuente de proteína y grasa." },
-      { nombre: "Aceite de oliva extra virgen", categoria: "grasa", prot: 0, carb: 0, grasa: 100, fibra: 0, nota: "Usar en crudo. Potente antiinflamatorio." },
-      { nombre: "Aceite de coco", categoria: "grasa", prot: 0, carb: 0, grasa: 100, fibra: 0, nota: "Contiene TCM, energía rápida. Usar con moderación." },
-
-      // FIBRA (Alimentos destacados por su alto contenido)
-      { nombre: "Lentejas (cocidas)", categoria: "fibra", prot: 9, carb: 20, grasa: 0.4, fibra: 8, nota: "8g de fibra por cada 100g. Excelente para saciedad." },
-      { nombre: "Frijol cargamanto (cocido)", categoria: "fibra", prot: 9, carb: 22, grasa: 0.5, fibra: 7, nota: "7g de fibra. Alimentar la microbiota." },
-      { nombre: "Avena en hojuelas", categoria: "fibra", prot: 13, carb: 66, grasa: 7, fibra: 10, nota: "10g de fibra. Betaglucanos para control glucémico." },
-      { nombre: "Guayaba", categoria: "fibra", prot: 2.5, carb: 14, grasa: 1, fibra: 5, nota: "5g de fibra. Comer con cáscara." },
-      { nombre: "Uva caimarona", categoria: "fibra", prot: 1, carb: 10, grasa: 0.2, fibra: 2, nota: "Fibra soluble de la región." },
-      { nombre: "Brócoli (cocido)", categoria: "fibra", prot: 2.4, carb: 7, grasa: 0.4, fibra: 3.3, nota: "Crucífera, apoya la detoxificación hepática." },
-      { nombre: "Espinaca", categoria: "fibra", prot: 2.9, carb: 3.6, grasa: 0.4, fibra: 2.2, nota: "Baja en calorías, alta en magnesio y folato." }
+      // === CARNES ROJAS ===
+      { nombre: "🥩 Posta negra de res", categoria: "proteina",
+        crudo: { prot: 20, carb: 0, grasa: 5, fibra: 0 },
+        cocinado: { prot: 28, carb: 0, grasa: 5, fibra: 0 },
+        seCocina: true,
+        nota: "Excelente fuente de hierro hemo y B12." },
+      { nombre: "🥩 Muchacho de res", categoria: "proteina",
+        crudo: { prot: 19, carb: 0, grasa: 6, fibra: 0 },
+        cocinado: { prot: 26, carb: 0, grasa: 8, fibra: 0 },
+        seCocina: true,
+        nota: "Corte magro, rico en colágeno." },
+      { nombre: "🐖 Lomo de cerdo", categoria: "proteina",
+        crudo: { prot: 21, carb: 0, grasa: 4, fibra: 0 },
+        cocinado: { prot: 26, carb: 0, grasa: 6, fibra: 0 },
+        seCocina: true,
+        nota: "Buena relación costo-beneficio." },
+      
+      // === PESCADOS Y MARISCOS ===
+      { nombre: "🐟 Mojarra (filete)", categoria: "proteina",
+        crudo: { prot: 18, carb: 0, grasa: 3, fibra: 0 },
+        cocinado: { prot: 22, carb: 0, grasa: 4, fibra: 0 },
+        seCocina: true,
+        nota: "Excelente opción regional, fácil digestión." },
+      { nombre: "🐟 Bocachico", categoria: "proteina",
+        crudo: { prot: 15, carb: 0, grasa: 4, fibra: 0 },
+        cocinado: { prot: 18, carb: 0, grasa: 5, fibra: 0 },
+        seCocina: true,
+        nota: "Pescado tradicional amazónico." },
+      { nombre: "🐟 Salmón", categoria: "proteina",
+        crudo: { prot: 20, carb: 0, grasa: 13, fibra: 0 },
+        cocinado: { prot: 22, carb: 0, grasa: 13, fibra: 0 },
+        seCocina: true,
+        nota: "Aporta Omega-3 (ajustar grasas totales)." },
+      { nombre: "🐟 Tilapia (filete)", categoria: "proteina",
+        crudo: { prot: 20, carb: 0, grasa: 2, fibra: 0 },
+        cocinado: { prot: 26, carb: 0, grasa: 3, fibra: 0 },
+        seCocina: true,
+        nota: "Muy magra, versátil." },
+      { nombre: "🦐 Camarones", categoria: "proteina",
+        crudo: { prot: 20, carb: 0.2, grasa: 1, fibra: 0 },
+        cocinado: { prot: 24, carb: 0.2, grasa: 1.5, fibra: 0 },
+        seCocina: true,
+        nota: "Muy bajo en grasa." },
+      { nombre: "🐟 Atún en agua (escurrido)", categoria: "proteina",
+        crudo: { prot: 29, carb: 0, grasa: 1, fibra: 0 },
+        cocinado: { prot: 29, carb: 0, grasa: 1, fibra: 0 },
+        seCocina: false,
+        nota: "Práctico, ya viene cocido." },
+      
+      // === PROTEÍNAS VEGETALES ===
+      { nombre: "🌱 Lentejas", categoria: "proteina",
+        crudo: { prot: 25, carb: 60, grasa: 1, fibra: 17 },
+        cocinado: { prot: 9, carb: 20, grasa: 0.4, fibra: 8 },
+        seCocina: true,
+        nota: "100g crudo = ~270g cocido. Alta en fibra." },
+      { nombre: "🌱 Frijol cargamanto", categoria: "proteina",
+        crudo: { prot: 22, carb: 60, grasa: 1.5, fibra: 16 },
+        cocinado: { prot: 9, carb: 22, grasa: 0.5, fibra: 7 },
+        seCocina: true,
+        nota: "Alto en hierro no hemo (combinar con vitamina C)." },
+      { nombre: "🌱 Garbanzos", categoria: "proteina",
+        crudo: { prot: 20, carb: 60, grasa: 6, fibra: 17 },
+        cocinado: { prot: 9, carb: 27, grasa: 2.6, fibra: 8 },
+        seCocina: true,
+        nota: "Proteína y carbohidrato complejo." },
+      { nombre: "🌱 Tofu firme", categoria: "proteina",
+        crudo: { prot: 15, carb: 2, grasa: 8, fibra: 1 },
+        cocinado: { prot: 15, carb: 2, grasa: 8, fibra: 1 },
+        seCocina: false,
+        nota: "Proteína vegetal completa, isoflavonas." },
+      
+      // === CARBOHIDRATOS ===
+      { nombre: "🥔 Papa criolla", categoria: "carbohidrato",
+        crudo: { prot: 2, carb: 17, grasa: 0.1, fibra: 2 },
+        cocinado: { prot: 2, carb: 18, grasa: 0.2, fibra: 2 },
+        seCocina: true,
+        nota: "Índice glucémico moderado, rica en potasio." },
+      { nombre: "🥔 Papa pastusa", categoria: "carbohidrato",
+        crudo: { prot: 2, carb: 17, grasa: 0.1, fibra: 2 },
+        cocinado: { prot: 2, carb: 17, grasa: 0.1, fibra: 2 },
+        seCocina: true,
+        nota: "Buena fuente de energía." },
+      { nombre: "🍠 Yuca", categoria: "carbohidrato",
+        crudo: { prot: 1, carb: 30, grasa: 0.2, fibra: 1.5 },
+        cocinado: { prot: 1.5, carb: 33, grasa: 0.3, fibra: 2 },
+        seCocina: true,
+        nota: "Alto valor energético, libre de gluten." },
+      { nombre: "🍠 Ñame", categoria: "carbohidrato",
+        crudo: { prot: 1.5, carb: 24, grasa: 0.2, fibra: 3 },
+        cocinado: { prot: 1.5, carb: 28, grasa: 0.2, fibra: 4 },
+        seCocina: true,
+        nota: "Excelente fuente de fibra y energía lenta." },
+      { nombre: "🍌 Plátano verde", categoria: "carbohidrato",
+        crudo: { prot: 1.3, carb: 25, grasa: 0.3, fibra: 2 },
+        cocinado: { prot: 1.3, carb: 30, grasa: 0.4, fibra: 2.5 },
+        seCocina: true,
+        nota: "Alto en almidón resistente (prebiótico)." },
+      { nombre: "🍌 Plátano maduro", categoria: "carbohidrato",
+        crudo: { prot: 1.2, carb: 32, grasa: 0.4, fibra: 2 },
+        cocinado: { prot: 1.2, carb: 32, grasa: 0.4, fibra: 2 },
+        seCocina: false,
+        nota: "Más azúcar natural, ideal pre-entreno." },
+      { nombre: "🍚 Arroz blanco", categoria: "carbohidrato",
+        crudo: { prot: 7, carb: 80, grasa: 0.6, fibra: 1 },
+        cocinado: { prot: 2.7, carb: 28, grasa: 0.3, fibra: 0.4 },
+        seCocina: true,
+        nota: "100g crudo = ~260g cocido. Energía rápida." },
+      { nombre: "🍚 Arroz integral", categoria: "carbohidrato",
+        crudo: { prot: 8, carb: 72, grasa: 2.5, fibra: 4 },
+        cocinado: { prot: 2.6, carb: 23, grasa: 1, fibra: 1.8 },
+        seCocina: true,
+        nota: "Más fibra y micronutrientes que el blanco." },
+      { nombre: "🌾 Avena en hojuelas", categoria: "carbohidrato",
+        crudo: { prot: 13, carb: 66, grasa: 7, fibra: 10 },
+        cocinado: { prot: 5, carb: 25, grasa: 2.5, fibra: 4 },
+        seCocina: true,
+        nota: "100g crudo = ~250g cocida. Betaglucanos." },
+      { nombre: "🌾 Quinua", categoria: "carbohidrato",
+        crudo: { prot: 14, carb: 64, grasa: 6, fibra: 7 },
+        cocinado: { prot: 4.4, carb: 21, grasa: 1.9, fibra: 2.8 },
+        seCocina: true,
+        nota: "Contiene los 9 aminoácidos esenciales." },
+      { nombre: "🫓 Arepa de maíz pelado", categoria: "carbohidrato",
+        crudo: { prot: 3, carb: 45, grasa: 1, fibra: 3 },
+        cocinado: { prot: 3, carb: 45, grasa: 1, fibra: 3 },
+        seCocina: false,
+        nota: "Tradicional, mejor que harina refinada." },
+      { nombre: "🌽 Mote de maíz (trillado)", categoria: "carbohidrato",
+        crudo: { prot: 3, carb: 20, grasa: 0.5, fibra: 2 },
+        cocinado: { prot: 3, carb: 20, grasa: 0.5, fibra: 2 },
+        seCocina: false,
+        nota: "Tradicional de la región." },
+      
+      // === FRUTAS ===
+      { nombre: "🍇 Uva caimarona", categoria: "carbohidrato",
+        crudo: { prot: 1, carb: 10, grasa: 0.2, fibra: 2 },
+        cocinado: { prot: 1, carb: 10, grasa: 0.2, fibra: 2 },
+        seCocina: false,
+        nota: "Fruta amazónica, alta en antioxidantes." },
+      { nombre: "🍊 Arazá", categoria: "carbohidrato",
+        crudo: { prot: 0.5, carb: 8, grasa: 0.3, fibra: 3 },
+        cocinado: { prot: 0.5, carb: 8, grasa: 0.3, fibra: 3 },
+        seCocina: false,
+        nota: "Altísima en Vitamina C." },
+      { nombre: "🍫 Copoazú", categoria: "carbohidrato",
+        crudo: { prot: 1.5, carb: 12, grasa: 0.5, fibra: 4 },
+        cocinado: { prot: 1.5, carb: 12, grasa: 0.5, fibra: 4 },
+        seCocina: false,
+        nota: "Prebiótico natural, sabor único." },
+      { nombre: "🍈 Maracuyá", categoria: "carbohidrato",
+        crudo: { prot: 2, carb: 12, grasa: 0.7, fibra: 3 },
+        cocinado: { prot: 2, carb: 12, grasa: 0.7, fibra: 3 },
+        seCocina: false,
+        nota: "Efecto calmante leve, rico en vitamina A." },
+      { nombre: "🍋 Lulo", categoria: "carbohidrato",
+        crudo: { prot: 1, carb: 8, grasa: 0.3, fibra: 2 },
+        cocinado: { prot: 1, carb: 8, grasa: 0.3, fibra: 2 },
+        seCocina: false,
+        nota: "Alcalinizante, rico en vitamina C." },
+      { nombre: "🍈 Papaya", categoria: "carbohidrato",
+        crudo: { prot: 0.5, carb: 11, grasa: 0.3, fibra: 1.7 },
+        cocinado: { prot: 0.5, carb: 11, grasa: 0.3, fibra: 1.7 },
+        seCocina: false,
+        nota: "Contiene papaína, mejora digestión." },
+      { nombre: "🍍 Piña", categoria: "carbohidrato",
+        crudo: { prot: 0.5, carb: 13, grasa: 0.1, fibra: 1.4 },
+        cocinado: { prot: 0.5, carb: 13, grasa: 0.1, fibra: 1.4 },
+        seCocina: false,
+        nota: "Contiene bromelina, antiinflamatoria." },
+      { nombre: "🍐 Guayaba", categoria: "carbohidrato",
+        crudo: { prot: 2.5, carb: 14, grasa: 1, fibra: 5 },
+        cocinado: { prot: 2.5, carb: 14, grasa: 1, fibra: 5 },
+        seCocina: false,
+        nota: "Altísima en vitamina C y fibra." },
+      
+      // === GRASAS ===
+      { nombre: "🥑 Aguacate (Hass/Papelillo)", categoria: "grasa",
+        crudo: { prot: 2, carb: 9, grasa: 15, fibra: 7 },
+        cocinado: { prot: 2, carb: 9, grasa: 15, fibra: 7 },
+        seCocina: false,
+        nota: "Grasa monoinsaturada, salud cardiovascular." },
+      { nombre: "🌴 Chontaduro", categoria: "grasa",
+        crudo: { prot: 2, carb: 15, grasa: 14, fibra: 4 },
+        cocinado: { prot: 2, carb: 15, grasa: 14, fibra: 4 },
+        seCocina: false,
+        nota: "Superalimento amazónico, Vitamina A." },
+      { nombre: "🌰 Almendras", categoria: "grasa",
+        crudo: { prot: 21, carb: 22, grasa: 50, fibra: 12 },
+        cocinado: { prot: 21, carb: 22, grasa: 50, fibra: 12 },
+        seCocina: false,
+        nota: "Ricas en Vitamina E y magnesio." },
+      { nombre: "🌰 Nueces", categoria: "grasa",
+        crudo: { prot: 15, carb: 14, grasa: 65, fibra: 7 },
+        cocinado: { prot: 15, carb: 14, grasa: 65, fibra: 7 },
+        seCocina: false,
+        nota: "Fuente vegetal de Omega-3 (ALA)." },
+      { nombre: "🥜 Maní (cacahuete)", categoria: "grasa",
+        crudo: { prot: 26, carb: 16, grasa: 49, fibra: 8 },
+        cocinado: { prot: 26, carb: 16, grasa: 49, fibra: 8 },
+        seCocina: false,
+        nota: "Económico, buena fuente de proteína y grasa." },
+      { nombre: "🫒 Aceite de oliva extra virgen", categoria: "grasa",
+        crudo: { prot: 0, carb: 0, grasa: 100, fibra: 0 },
+        cocinado: { prot: 0, carb: 0, grasa: 100, fibra: 0 },
+        seCocina: false,
+        nota: "Usar en crudo. Potente antiinflamatorio." },
+      { nombre: "🥥 Aceite de coco", categoria: "grasa",
+        crudo: { prot: 0, carb: 0, grasa: 100, fibra: 0 },
+        cocinado: { prot: 0, carb: 0, grasa: 100, fibra: 0 },
+        seCocina: false,
+        nota: "Contiene TCM. Usar con moderación." },
+      
+      // === FIBRA (destacados por alto contenido) ===
+      { nombre: "🌱 Lentejas", categoria: "fibra",
+        crudo: { prot: 25, carb: 60, grasa: 1, fibra: 17 },
+        cocinado: { prot: 9, carb: 20, grasa: 0.4, fibra: 8 },
+        seCocina: true,
+        nota: "8g fibra/100g cocido. Excelente saciedad." },
+      { nombre: "🌱 Frijol cargamanto", categoria: "fibra",
+        crudo: { prot: 22, carb: 60, grasa: 1.5, fibra: 16 },
+        cocinado: { prot: 9, carb: 22, grasa: 0.5, fibra: 7 },
+        seCocina: true,
+        nota: "7g fibra/100g cocido. Alimentar microbiota." },
+      { nombre: "🌾 Avena en hojuelas", categoria: "fibra",
+        crudo: { prot: 13, carb: 66, grasa: 7, fibra: 10 },
+        cocinado: { prot: 5, carb: 25, grasa: 2.5, fibra: 4 },
+        seCocina: true,
+        nota: "4g fibra/100g cocida. Betaglucanos." },
+      { nombre: "🍐 Guayaba", categoria: "fibra",
+        crudo: { prot: 2.5, carb: 14, grasa: 1, fibra: 5 },
+        cocinado: { prot: 2.5, carb: 14, grasa: 1, fibra: 5 },
+        seCocina: false,
+        nota: "5g fibra. Comer con cáscara." },
+      { nombre: "🍇 Uva caimarona", categoria: "fibra",
+        crudo: { prot: 1, carb: 10, grasa: 0.2, fibra: 2 },
+        cocinado: { prot: 1, carb: 10, grasa: 0.2, fibra: 2 },
+        seCocina: false,
+        nota: "Fibra soluble de la región." },
+      { nombre: "🥦 Brócoli (cocido)", categoria: "fibra",
+        crudo: { prot: 2.8, carb: 7, grasa: 0.4, fibra: 2.6 },
+        cocinado: { prot: 2.4, carb: 7, grasa: 0.4, fibra: 3.3 },
+        seCocina: true,
+        nota: "Crucífera, apoya detoxificación hepática." },
+      { nombre: "🥬 Espinaca", categoria: "fibra",
+        crudo: { prot: 2.9, carb: 3.6, grasa: 0.4, fibra: 2.2 },
+        cocinado: { prot: 3, carb: 3.5, grasa: 0.4, fibra: 2.5 },
+        seCocina: true,
+        nota: "Alta en magnesio y folato." }
     ];
 
-    // --- 3. LÓGICA DE CÁLCULO METABÓLICO ---
+    // --- LÓGICA DE CÁLCULO METABÓLICO ---
     const selectPerdidaGrasa = document.getElementById('perdidaGrasa');
     for (let i = 5; i <= 25; i += 5) {
       const option = document.createElement('option');
@@ -734,7 +985,7 @@
       document.getElementById(id).addEventListener('input', calcularTodo);
     });
 
-    let formulasData = {}; // Para guardar los valores originales y poder restaurarlos
+    let formulasData = {};
 
     function calcularTodo() {
       const peso = parseFloat(document.getElementById('peso').value);
@@ -803,7 +1054,6 @@
     }
 
     function calcularObjetivos(get, peso) {
-      // Pérdida
       const perdidaPorcentaje = parseInt(document.getElementById('perdidaGrasa').value);
       if (perdidaPorcentaje) {
         const calorias = get - (get * (Math.abs(perdidaPorcentaje) / 100));
@@ -819,7 +1069,6 @@
         document.getElementById('cardPerdidaGrasa').style.display = 'none';
       }
       
-      // Ganancia
       const gananciaPorcentaje = parseInt(document.getElementById('gananciaMusculo').value);
       if (gananciaPorcentaje) {
         const calorias = get + (get * (gananciaPorcentaje / 100));
@@ -835,7 +1084,6 @@
         document.getElementById('cardGananciaMusculo').style.display = 'none';
       }
       
-      // Recomposición
       const recomposicion = document.getElementById('recomposicion').value;
       if (recomposicion === 'recomposicion') {
         const calorias = get * 0.95;
@@ -850,7 +1098,6 @@
         document.getElementById('cardRecomposicion').style.display = 'none';
       }
 
-      // Mantenimiento
       const mantenimiento = document.getElementById('mantenimiento').value;
       if (mantenimiento === 'mantenimiento') {
         const macros = calcularMacros(get, peso, 'mantenimiento');
@@ -865,17 +1112,13 @@
       }
     }
 
-    // --- 4. LÓGICA DE EDICIÓN EN TIEMPO REAL ---
     function recalcularDesdeMacros(tipo) {
-      const kcal = parseFloat(document.getElementById(`edit${capitalize(tipo)}Kcal`).value) || 0;
       const prot = parseFloat(document.getElementById(`edit${capitalize(tipo)}Prot`).value) || 0;
       const grasa = parseFloat(document.getElementById(`edit${capitalize(tipo)}Grasa`).value) || 0;
       const carb = parseFloat(document.getElementById(`edit${capitalize(tipo)}Carb`).value) || 0;
       
       const kcalCalculada = (prot * 4) + (grasa * 9) + (carb * 4);
       
-      // Actualizamos el campo de kcal para que refleje la suma de los macros editados
-      // (Opcional: si la doctora edita las kcal primero, podríamos redistribuir, pero es más seguro que los macros manden)
       if (document.activeElement.id !== `edit${capitalize(tipo)}Kcal`) {
         document.getElementById(`edit${capitalize(tipo)}Kcal`).value = Math.round(kcalCalculada);
       }
@@ -905,64 +1148,99 @@
       document.getElementById('cardExtras').style.display = 'block';
     }
 
-    // --- 5. LÓGICA DE EQUIVALENCIAS ---
+    // --- 🆕 LÓGICA DE EQUIVALENCIAS CON CRUDO Y COCINADO ---
     function calcularEquivalencias() {
-  const nutrienteSelect = document.getElementById('equivNutriente').value;
-  const cantidad = parseFloat(document.getElementById('equivCantidad').value);
-  const container = document.getElementById('equivResults');
-  
-  // 🆕 MAPEO: Convierte el valor del select al nombre real de la propiedad en la BD
-  const mapeoNutrientes = {
-    'proteina': 'prot',
-    'carbohidrato': 'carb',
-    'grasa': 'grasa',
-    'fibra': 'fibra'
-  };
-  
-  const campoReal = mapeoNutrientes[nutrienteSelect];
-  
-  if (!cantidad || cantidad <= 0) {
-    container.innerHTML = '<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 2rem;">Ingresa una cantidad válida mayor a 0.</p>';
-    return;
-  }
+      const nutrienteSelect = document.getElementById('equivNutriente').value;
+      const cantidad = parseFloat(document.getElementById('equivCantidad').value);
+      const container = document.getElementById('equivResults');
+      
+      const mapeoNutrientes = {
+        'proteina': 'prot',
+        'carbohidrato': 'carb',
+        'grasa': 'grasa',
+        'fibra': 'fibra'
+      };
+      
+      const campoReal = mapeoNutrientes[nutrienteSelect];
+      
+      if (!cantidad || cantidad <= 0) {
+        container.innerHTML = '<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 2rem;">Ingresa una cantidad válida mayor a 0.</p>';
+        return;
+      }
 
-  // Filtrar y ordenar por mayor densidad del nutriente seleccionado
-  const alimentosFiltrados = alimentosDB
-    .filter(a => a[campoReal] > 0)
-    .map(a => {
-      const gramosNecesarios = (cantidad / a[campoReal]) * 100;
-      return { ...a, gramosNecesarios: Math.round(gramosNecesarios) };
-    })
-    .sort((a, b) => b[campoReal] - a[campoReal])
-    .slice(0, 12);
+      // Filtrar y calcular pesos crudo y cocinado
+      const alimentosFiltrados = alimentosDB
+        .filter(a => a.cocinado[campoReal] > 0)
+        .map(a => {
+          // Peso cocinado necesario (basado en valores cocinados)
+          const gramosCocinado = (cantidad / a.cocinado[campoReal]) * 100;
+          
+          // Peso crudo necesario (basado en valores crudos)
+          const gramosCrudo = (cantidad / a.crudo[campoReal]) * 100;
+          
+          return { 
+            ...a, 
+            gramosCocinado: Math.round(gramosCocinado),
+            gramosCrudo: Math.round(gramosCrudo)
+          };
+        })
+        .sort((a, b) => b.cocinado[campoReal] - a.cocinado[campoReal])
+        .slice(0, 12);
 
       if (alimentosFiltrados.length === 0) {
         container.innerHTML = '<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 2rem;">No se encontraron alimentos para este nutriente.</p>';
         return;
       }
 
-      container.innerHTML = alimentosFiltrados.map(alimento => `
-        <div class="food-card">
-          <div class="food-name">${alimento.nombre}</div>
-          <div class="food-amount">${alimento.gramosNecesarios} g</div>
-          <div class="food-detail">
-            Aporta: ${alimento.prot}g Prot | ${alimento.carb}g Carb | ${alimento.grasa}g Grasa | ${alimento.fibra}g Fibra <br>
-            <small>(por cada 100g)</small>
+      container.innerHTML = alimentosFiltrados.map(alimento => {
+        let weightHTML = '';
+        
+        if (alimento.seCocina) {
+          // Mostrar ambos pesos: crudo y cocinado
+          weightHTML = `
+            <div class="weight-display">
+              <div class="weight-box">
+                <div class="weight-label">🥄 Peso Crudo</div>
+                <div class="weight-value">${alimento.gramosCrudo}</div>
+                <div class="weight-unit">gramos</div>
+              </div>
+              <div class="weight-box highlight">
+                <div class="weight-label">🍽️ Peso Cocinado</div>
+                <div class="weight-value">${alimento.gramosCocinado}</div>
+                <div class="weight-unit">gramos</div>
+              </div>
+            </div>
+          `;
+        } else {
+          // Un solo peso (frutas, quesos, yogur, aceites)
+          weightHTML = `
+            <div class="weight-single">
+              <div class="weight-label">⚖️ Peso necesario</div>
+              <div class="weight-value">${alimento.gramosCocinado} g</div>
+            </div>
+          `;
+        }
+        
+        return `
+          <div class="food-card">
+            <div class="food-name">${alimento.nombre}</div>
+            ${weightHTML}
+            <div class="food-detail">
+              <strong>Aporte por 100g:</strong><br>
+              Prot: ${alimento.cocinado.prot}g | Carb: ${alimento.cocinado.carb}g | Grasa: ${alimento.cocinado.grasa}g | Fibra: ${alimento.cocinado.fibra}g
+            </div>
+            <div class="food-note">💡 ${alimento.nota}</div>
           </div>
-          <div class="food-note">💡 ${alimento.nota}</div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
-    // Inicializar equivalencias al cargar
     calcularEquivalencias();
 
-    // --- 6. UTILIDADES ---
     function descargarPDF() {
       const element = document.getElementById('pdf-content');
       const paciente = document.getElementById('paciente').value || 'Paciente';
       
-      // Ocultar temporalmente la pestaña de equivalencias para que no salga en el PDF
       const tabEquiv = document.getElementById('tab-equivalencias');
       const originalDisplay = tabEquiv.style.display;
       tabEquiv.style.display = 'none';
@@ -983,7 +1261,7 @@
       html2pdf().set(opt).from(element).save().then(() => {
         btn.innerHTML = originalText;
         btn.disabled = false;
-        tabEquiv.style.display = originalDisplay; // Restaurar
+        tabEquiv.style.display = originalDisplay;
       });
     }
 
